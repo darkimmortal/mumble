@@ -507,6 +507,19 @@ void Server::msgUserState(ServerUser *uSource, MumbleProto::UserState &msg) {
 			PERM_DENIED_FALLBACK(ChannelFull, 0x010201, QLatin1String("Channel is full"));
 			return;
 		}
+
+    QRegExp rx("\\[\\[limit\\:(\\d+)\\]\\]");
+    if(rx.indexIn(c->qsDesc) != 1){
+       bool ok;
+       unsigned int uiLimit = rx.cap(1).toUInt(&ok, 10);
+       if(ok && uSource == pDstServerUser /*&& !hasPermission(uSource, c, ChanACL::Move)*/ && c->qlUsers.count() >= uiLimit){
+           //mpus.set_channel_id(c->iId);
+           PERM_DENIED_FALLBACK(ChannelFull, 0x010201, QString("<strong>Fuck off you stupid shit, this channel is full (max %1 users).</strong>").arg(uiLimit));
+           sendTextMessage(NULL, pDstServerUser, false, QString("<strong>Fuck off you stupid shit, this channel is full (max %1 users).</strong>").arg(uiLimit));
+           return;
+       }
+    }
+
 	}
 
 	if (msg.has_mute() || msg.has_deaf() || msg.has_suppress() || msg.has_priority_speaker()) {

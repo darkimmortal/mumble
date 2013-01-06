@@ -35,8 +35,8 @@
 #define MUMXTEXT(X) #X
 #define MUMTEXT(X) MUMXTEXT(X)
 
-#ifndef MUMBLE_VERSION
-#define MUMBLE_RELEASE "Compiled " __DATE__ " " __TIME__
+#ifndef MUMBLE_VERSION 
+#define MUMBLE_RELEASE "Murmur DarkMOD super sexy wizard gangnam style edition release #2, last updated "__DATE__ " " __TIME__
 #else
 #define MUMBLE_RELEASE MUMTEXT(MUMBLE_VERSION)
 #endif

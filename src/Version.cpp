@@ -31,7 +31,7 @@
 
 #include "murmur_pch.h"
 
-#include "Version.h"
+#include "Version.h" 
 
 unsigned int MumbleVersion::getRaw(const QString &version) {
 	int major, minor, patch;
@@ -45,7 +45,7 @@ unsigned int MumbleVersion::getRaw(const QString &version) {
 QString MumbleVersion::toString(unsigned int v) {
 	int major, minor, patch;
 	fromRaw(v, &major, &minor, &patch);
-	return QString::fromLatin1("%1.%2.%3").arg(major).arg(minor).arg(patch);
+	return QString::fromLatin1("%1.%2.%3 DarkMOD super wizard gangnam style version").arg(major).arg(minor).arg(patch);
 }
 
 bool MumbleVersion::get(int *major, int *minor, int *patch, const QString &version) {

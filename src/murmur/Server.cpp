@@ -47,6 +47,7 @@
 #ifdef USE_BONJOUR
 #include "BonjourServer.h"
 #include "BonjourServiceRegister.h"
+#include "Mumble.pb.h"
 #endif
 
 #define UDP_PACKET_SIZE 1024
@@ -463,7 +464,7 @@ void Server::setLiveConf(const QString &key, const QString &value) {
 			qsWelcomeText = text;
 			if (! qsWelcomeText.isEmpty()) {
 				MumbleProto::ServerConfig mpsc;
-				mpsc.set_welcome_text(u8(qsWelcomeText));
+				mpsc.set_welcome_text(u8(qsWelcomeText));                                
 				sendAll(mpsc);
 			}
 		}
@@ -1480,7 +1481,9 @@ bool Server::unregisterUser(int id) {
 void Server::userEnterChannel(User *p, Channel *c, MumbleProto::UserState &mpus) {
 	if (p->cChannel == c)
 		return;
-
+        //sendTextMessage(NULL, static_cast<ServerUser *>(p), false, QString("<strong>suck a dick (max %1 users).</strong>").arg(1));	
+  
+        
 	Channel *old = p->cChannel;
 
 	{
@@ -1703,7 +1706,7 @@ void Server::recheckCodecVersions(ServerUser *connectingUser) {
 			iCodecBeta = version;
 	} else if (bOpus == enableOpus) {
 		if (connectingUser && !connectingUser->bOpus) {
-			sendTextMessage(NULL, connectingUser, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is using, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
+			//sendTextMessage(NULL, connectingUser, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is using, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
 		}
 		return;
 	}
@@ -1723,7 +1726,7 @@ void Server::recheckCodecVersions(ServerUser *connectingUser) {
 			// Only authenticated users and the currently connecting user (if recheck is called in that context) have a reliable u->bOpus.
 			if((u->sState == ServerUser::Authenticated || u == connectingUser)
 			   && !u->bOpus) {
-				sendTextMessage(NULL, u, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is switching to, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
+				//sendTextMessage(NULL, u, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is switching to, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
 			}
 		}
 	}
