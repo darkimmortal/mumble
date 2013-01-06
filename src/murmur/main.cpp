@@ -80,7 +80,7 @@ static void murmurMessageOutput(QtMsgType type, const char *msg) {
 		default:
 			c='X';
 	}
-	QString m= QString::fromLatin1("<%1>%2 %3").arg(QChar::fromLatin1(c)).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")).arg(msg);
+	QString m= QString::fromLatin1("<%1>%2 quack %3").arg(QChar::fromLatin1(c)).arg(QDateTime::currentDateTime().toString("QUACK yyyy-MM-dd hh:mm:ss.zzz")).arg(msg);
 
 	if (! qfLog || ! qfLog->isOpen()) {
 #ifdef Q_OS_UNIX
@@ -196,10 +196,11 @@ int main(int argc, char **argv) {
 	bool wipeSsl = false;
 	bool wipeLogs = false;
 	int sunum = 1;
-#ifndef Q_OS_WIN
+#ifdef Q_OS_UNIX
 	bool readPw = false;
 #endif
 
+	qsrand(QDateTime::currentDateTime().toTime_t());
 	qInstallMsgHandler(murmurMessageOutput);
 
 #ifdef Q_OS_WIN
@@ -252,7 +253,7 @@ int main(int argc, char **argv) {
 			qFatal("%s -- %s", argv[0], MUMBLE_RELEASE);
 		} else if ((arg == "-h") || (arg == "-help") || (arg == "--help")) {
 			detach = false;
-			qFatal("Usage: %s [-ini <inifile>] [-supw <password>]\n"
+			qFatal("Usage: %s [-ini <inifile>] [-supw <password>] quack quack quack\n"
 			       "  -ini <inifile>   Specify ini file to use.\n"
 			       "  -supw <pw> [srv] Set password for 'SuperUser' account on server srv.\n"
 #ifdef Q_OS_UNIX
@@ -282,6 +283,9 @@ int main(int argc, char **argv) {
 		}
 	}
 
+#ifdef Q_OS_UNIX
+	inifile = unixhandler.trySystemIniFiles(inifile);
+#endif
 
 	Meta::mp.read(inifile);
 
