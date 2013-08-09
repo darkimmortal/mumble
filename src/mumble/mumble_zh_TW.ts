@@ -498,7 +498,7 @@ Contains the list of members inherited by the current channel. Uncheck &lt;i&gt;
 <context>
     <name>ASIOConfig</name>
     <message>
-        <location filename="ASIOInput.cpp" line="+226"/>
+        <location filename="ASIOInput.cpp" line="+225"/>
         <source>%1 (version %2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1500,12 +1500,12 @@ Contains the list of members inherited by the current channel. Uncheck &lt;i&gt;
 <context>
     <name>AudioOutputSample</name>
     <message>
-        <location filename="AudioOutputSample.cpp" line="+212"/>
+        <location filename="AudioOutputSample.cpp" line="+211"/>
         <source>Choose sound file</source>
         <translation type="unfinished">選擇聲音文件</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Invalid sound file</source>
         <translation type="unfinished">無效聲音文件</translation>
     </message>
@@ -2206,7 +2206,7 @@ Speak loudly, as when you are annoyed or excited. Decrease the volume in the sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+41"/>
         <source>(none)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2284,7 +2284,7 @@ Speak loudly, as when you are annoyed or excited. Decrease the volume in the sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+454"/>
+        <location filename="main.cpp" line="+456"/>
         <source>&lt;b&gt;Certificate Expiry:&lt;/b&gt; Your certificate is about to expire. You need to renew it, or you will no longer be able to connect to servers you are registered on.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2819,7 +2819,7 @@ It is &lt;b&gt;strongly&lt;/b&gt; recommended that you &lt;a href=&quot;http://m
 <context>
     <name>ConfigDialog</name>
     <message>
-        <location filename="ConfigDialog.cpp" line="+55"/>
+        <location filename="ConfigDialog.cpp" line="+57"/>
         <source>Accept changes</source>
         <translation>確定</translation>
     </message>
@@ -3266,17 +3266,17 @@ Label of the server. This is what the server will be named like in your server l
         <translation>默認 DirectSound 語音輸入</translation>
     </message>
     <message>
-        <location line="+461"/>
+        <location line="+451"/>
         <source>Opening chosen DirectSound Input device failed. No microphone capture will be done.</source>
         <translation>不能打開所選 DirectSound 輸入設備。不能捕捉麥克風。</translation>
     </message>
     <message>
-        <location line="-79"/>
+        <location line="-83"/>
         <source>Opening chosen DirectSound Input failed. Default device will be used.</source>
         <translation>不能打開所選 DirectSound 輸入。將使用默認設備。</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+78"/>
         <source>Lost DirectSound input device.</source>
         <translation>丟失 DirectSound 輸入設備。</translation>
     </message>
@@ -3284,17 +3284,17 @@ Label of the server. This is what the server will be named like in your server l
 <context>
     <name>DXAudioOutput</name>
     <message>
-        <location line="-496"/>
+        <location line="-486"/>
         <source>Default DirectSound Voice Output</source>
         <translation>默認 DirectSound 語音輸出</translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+243"/>
         <source>Opening chosen DirectSound Output failed. Default device will be used.</source>
         <translation>不能打開所選 DirectSound 輸出。將使用默認設備。</translation>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+73"/>
         <source>Lost DirectSound output device.</source>
         <translation>丟失 DirectSound 輸出設備。</translation>
     </message>
@@ -3307,7 +3307,7 @@ Label of the server. This is what the server will be named like in your server l
 <context>
     <name>Database</name>
     <message>
-        <location filename="Database.cpp" line="+89"/>
+        <location filename="Database.cpp" line="+114"/>
         <source>Mumble failed to initialize a database in any
 of the possible locations.</source>
         <translation>Mumble 無法在任何可能的位置里初始化數據庫.</translation>
@@ -3404,11 +3404,16 @@ of the possible locations.</source>
         <source>Skip</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location/>
+        <source>Enable Global Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GlobalShortcutConfig</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="+710"/>
+        <location filename="GlobalShortcut.cpp" line="+721"/>
         <source>Shortcuts</source>
         <translation>快捷鍵</translation>
     </message>
@@ -4231,12 +4236,12 @@ This field describes the size of an LCD device. The size is given either in pixe
     <name>MainWindow</name>
     <message>
         <location filename="MainWindow.cpp" line="+182"/>
-        <location line="+2127"/>
+        <location line="+2150"/>
         <source>Root</source>
         <translation>根</translation>
     </message>
     <message>
-        <location line="-2075"/>
+        <location line="-2098"/>
         <source>Push-to-Talk</source>
         <comment>Global Shortcut</comment>
         <translation>按鍵通話</translation>
@@ -4315,12 +4320,12 @@ This field describes the size of an LCD device. The size is given either in pixe
     <message>
         <location filename="MainWindow.cpp" line="+4"/>
         <location line="+15"/>
-        <location line="+2226"/>
+        <location line="+2249"/>
         <source>Mumble -- %1</source>
         <translation></translation>
     </message>
     <message>
-        <location line="-2222"/>
+        <location line="-2244"/>
         <source>&amp;Window</source>
         <translation>&amp;窗口</translation>
     </message>
@@ -4346,7 +4351,7 @@ This field describes the size of an LCD device. The size is given either in pixe
         <translation>Mumble 現在連接到了一個服務器。你想要關閉還是最小化它？</translation>
     </message>
     <message>
-        <location line="-231"/>
+        <location line="-232"/>
         <source>&amp;User</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4399,14 +4404,14 @@ This field describes the size of an LCD device. The size is given either in pixe
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
-        <location line="+2268"/>
+        <location line="+58"/>
+        <location line="+2290"/>
         <source>&lt;center&gt;Not connected&lt;/center&gt;</source>
         <oldsource>Not connected</oldsource>
         <translation type="unfinished">未連接</translation>
     </message>
     <message>
-        <location line="-1995"/>
+        <location line="-2006"/>
         <source>Clear</source>
         <translation>清除</translation>
     </message>
@@ -4487,24 +4492,24 @@ This field describes the size of an LCD device. The size is given either in pixe
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1361"/>
+        <location line="+1372"/>
         <source>This server is using an older encryption standard, and is no longer supported by modern versions of Mumble.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1465"/>
+        <location line="-1476"/>
         <location line="+354"/>
         <source>Register yourself as %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1086"/>
+        <location line="-1098"/>
         <source>This will switch the states of the in-game overlay.</source>
         <comment>Global Shortcut</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+732"/>
+        <location line="+744"/>
         <location line="+354"/>
         <source>&lt;p&gt;You are about to register yourself on this server. This action cannot be undone, and your username cannot be changed once this is done. You will forever be known as &apos;%1&apos; on this server.&lt;/p&gt;&lt;p&gt;Are you sure you want to register yourself?&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
@@ -4566,7 +4571,7 @@ This field describes the size of an LCD device. The size is given either in pixe
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1227"/>
+        <location line="+1238"/>
         <source>Connected.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4577,11 +4582,13 @@ This field describes the size of an LCD device. The size is given either in pixe
     </message>
     <message>
         <location line="+24"/>
+        <location filename="Messages.cpp" line="+98"/>
         <source>Username in use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="Messages.cpp" line="+3"/>
         <source>Wrong certificate or password</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4631,7 +4638,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1648"/>
+        <location line="-1659"/>
         <source>Voice channel is sent over control channel.</source>
         <translation>語音頻道通過控制信道發送。</translation>
     </message>
@@ -4682,12 +4689,12 @@ Otherwise abort and check your certificate and username.</source>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+1327"/>
+        <location line="+1338"/>
         <source>&amp;View Certificate</source>
         <translation>&amp;查看認証</translation>
     </message>
     <message>
-        <location line="-1052"/>
+        <location line="-1063"/>
         <location line="+19"/>
         <source>Enter reason</source>
         <translation>輸入原因</translation>
@@ -4754,7 +4761,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation>關于 Qt</translation>
     </message>
     <message>
-        <location line="+386"/>
+        <location line="+397"/>
         <source>SSL Verification failed: %1</source>
         <translation>SSL 認証失敗: %1</translation>
     </message>
@@ -4785,6 +4792,7 @@ Otherwise abort and check your certificate and username.</source>
     </message>
     <message>
         <location line="+11"/>
+        <location filename="Messages.cpp" line="-6"/>
         <source>Invalid username</source>
         <translation>無效用戶名</translation>
     </message>
@@ -4800,6 +4808,7 @@ Otherwise abort and check your certificate and username.</source>
     </message>
     <message>
         <location line="+13"/>
+        <location filename="Messages.cpp" line="+9"/>
         <source>Wrong password</source>
         <translation>密碼錯誤</translation>
     </message>
@@ -4809,7 +4818,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation>未注冊用戶的服務器密碼錯誤，請重試。</translation>
     </message>
     <message>
-        <location line="-2299"/>
+        <location line="-2322"/>
         <source>&amp;Channel</source>
         <translation type="unfinished">&amp;頻道</translation>
     </message>
@@ -4877,21 +4886,6 @@ Otherwise abort and check your certificate and username.</source>
         <location/>
         <source>Disconnects you from the server.</source>
         <translation>使你從服務器斷開連接。</translation>
-    </message>
-    <message>
-        <location/>
-        <source>&amp;Ban lists</source>
-        <translation>&amp;黑名單</translation>
-    </message>
-    <message>
-        <location/>
-        <source>Edit ban lists on server</source>
-        <translation>編輯服務器上的黑名單</translation>
-    </message>
-    <message>
-        <location/>
-        <source>This lets you edit the server-side IP ban lists.</source>
-        <translation>這讓你編輯服務器端的網址黑名單。</translation>
     </message>
     <message>
         <location/>
@@ -5396,7 +5390,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation>這將啟用簡化窗口模式，該模式將隱藏日志窗口和菜單。</translation>
     </message>
     <message>
-        <location filename="Messages.cpp" line="+329"/>
+        <location filename="Messages.cpp" line="+252"/>
         <source>You were unmuted and undeafened by %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5456,7 +5450,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation>%1 現在被靜音和耳聾.</translation>
     </message>
     <message>
-        <location line="-116"/>
+        <location line="-120"/>
         <source>You were denied %1 privileges in %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5467,7 +5461,12 @@ Otherwise abort and check your certificate and username.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-15"/>
+        <location line="-64"/>
+        <source>Your account information can not be verified currently. Please try again later</source>
+        <translation>您的帳戶信息目前無法確認，請稍候重試</translation>
+    </message>
+    <message>
+        <location line="+49"/>
         <source>Mumble: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5519,6 +5518,11 @@ Otherwise abort and check your certificate and username.</source>
     <message>
         <location line="+4"/>
         <source>Channel is full.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Channel nesting limit reached.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5719,12 +5723,12 @@ Otherwise abort and check your certificate and username.</source>
         <translation>%1 進入頻道。</translation>
     </message>
     <message>
-        <location line="-354"/>
+        <location line="-358"/>
         <source>Server connection rejected: %1.</source>
         <translation>服務器拒絕連接: %1。</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+147"/>
         <source>Denied: %1.</source>
         <translation>拒絕: %1。</translation>
     </message>
@@ -5744,7 +5748,7 @@ Otherwise abort and check your certificate and username.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="main.cpp" line="-271"/>
+        <location filename="main.cpp" line="-273"/>
         <source>Usage: mumble [options] [&lt;url&gt;]
 
 &lt;url&gt; specifies a URL to connect to after startup instead of showing
@@ -5769,7 +5773,7 @@ Valid options are:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>Welcome to Mumble.</source>
         <translation>歡迎來到 Mumble。</translation>
     </message>
@@ -5943,6 +5947,21 @@ Valid options are:
     <message>
         <location/>
         <source>Silently drops all text messages from the user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>&amp;Ban list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>Edit ban list on server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>This lets you edit the server-side IP ban list.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6337,7 +6356,7 @@ Prevents the client from downloading images embedded into chat messages with the
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+223"/>
         <source>Overlay</source>
         <translation></translation>
     </message>
@@ -6878,7 +6897,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>Plugins</name>
     <message>
-        <location filename="Plugins.cpp" line="+327"/>
+        <location filename="Plugins.cpp" line="+333"/>
         <source>Skipping plugin update in debug mode.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7029,7 +7048,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>ServerHandler</name>
     <message>
-        <location filename="ServerHandler.cpp" line="+447"/>
+        <location filename="ServerHandler.cpp" line="+470"/>
         <source>UDP packets cannot be sent to or received from the server. Switching to TCP mode.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7049,7 +7068,7 @@ To upgrade these files to their latest versions, click the button below.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+39"/>
         <source>Connection timed out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7105,7 +7124,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>ShortcutActionWidget</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="-549"/>
+        <location filename="GlobalShortcut.cpp" line="-558"/>
         <source>Unassigned</source>
         <translation>未分配</translation>
     </message>
@@ -7113,7 +7132,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>ShortcutDelegate</name>
     <message>
-        <location line="+361"/>
+        <location line="+370"/>
         <source>On</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7136,7 +7155,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>ShortcutKeyWidget</name>
     <message>
-        <location line="-435"/>
+        <location line="-444"/>
         <source>Press Shortcut</source>
         <translation>輸入快捷鍵</translation>
     </message>
@@ -7160,6 +7179,7 @@ To upgrade these files to their latest versions, click the button below.</source
     </message>
     <message>
         <location line="+5"/>
+        <location line="+6"/>
         <source>Subchannel #%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7192,6 +7212,7 @@ To upgrade these files to their latest versions, click the button below.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+3"/>
         <location line="+2"/>
         <source>Subchannel #%1</source>
         <translation type="unfinished"></translation>
@@ -7211,7 +7232,7 @@ To upgrade these files to their latest versions, click the button below.</source
 <context>
     <name>ShortcutToggleWidget</name>
     <message>
-        <location line="-259"/>
+        <location line="-268"/>
         <source>Off</source>
         <translation type="unfinished">關閉</translation>
     </message>
@@ -7494,6 +7515,11 @@ An access token is a text string, which can be used as a password for very simpl
         <location/>
         <source>Bandwidth</source>
         <comment>Label</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>Ping deviation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

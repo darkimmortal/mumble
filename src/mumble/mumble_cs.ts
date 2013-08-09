@@ -611,7 +611,7 @@ Obsahuje seznam členů, zděděných současným kanálem. Odškrtněte &lt;i&g
         <translation>Reproduktory</translation>
     </message>
     <message>
-        <location filename="ASIOInput.cpp" line="+226"/>
+        <location filename="ASIOInput.cpp" line="+225"/>
         <source>%1 (version %2)</source>
         <translation>%1 (verze %2)</translation>
     </message>
@@ -1512,12 +1512,12 @@ Obsahuje seznam členů, zděděných současným kanálem. Odškrtněte &lt;i&g
 <context>
     <name>AudioOutputSample</name>
     <message>
-        <location filename="AudioOutputSample.cpp" line="+212"/>
+        <location filename="AudioOutputSample.cpp" line="+211"/>
         <source>Choose sound file</source>
         <translation>Zvolte zvukový soubor</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Invalid sound file</source>
         <translation>Neplatný zvukový soubor</translation>
     </message>
@@ -2256,7 +2256,7 @@ Mluvte nahlas, jako kdybyste byli podráždění nebo nadšení. Snižujte hlasi
         <translation>Platný do</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+41"/>
         <source>(none)</source>
         <translation>(žádný)</translation>
     </message>
@@ -2334,7 +2334,7 @@ Mluvte nahlas, jako kdybyste byli podráždění nebo nadšení. Snižujte hlasi
         <translation>Uživatel Mumble</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+454"/>
+        <location filename="main.cpp" line="+456"/>
         <source>&lt;b&gt;Certificate Expiry:&lt;/b&gt; Your certificate is about to expire. You need to renew it, or you will no longer be able to connect to servers you are registered on.</source>
         <translation>&lt;b&gt;Vypršení Certifikátu:&lt;/b&gt; Váš certifikát brzy vyprší. Musíte ho obnovit, nebo se už nebudete moci připojit k serverům, na kterých jste registrování.</translation>
     </message>
@@ -2892,7 +2892,7 @@ Je &lt;b&gt;výrazně&lt;/b&gt; doporučeno, abyste si &lt;a href=&quot;http://m
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="ConfigDialog.cpp" line="+55"/>
+        <location filename="ConfigDialog.cpp" line="+57"/>
         <source>Accept changes</source>
         <translation>Přijmout změny</translation>
     </message>
@@ -3329,17 +3329,17 @@ Jmenovka serveru. Takto se bude server jmenovat ve Vašem seznamu serverů a mů
 <context>
     <name>DXAudioInput</name>
     <message>
-        <location filename="DirectSound.cpp" line="+555"/>
+        <location filename="DirectSound.cpp" line="+541"/>
         <source>Opening chosen DirectSound Input failed. Default device will be used.</source>
         <translation>Otevření vybraného vstupu DirectSound selhalo. Bude použito výchozí zařízení.</translation>
     </message>
     <message>
-        <location line="-382"/>
+        <location line="-368"/>
         <source>Default DirectSound Voice Input</source>
         <translation>Výchozí Hlasový vstup DirectSound</translation>
     </message>
     <message>
-        <location line="+461"/>
+        <location line="+451"/>
         <source>Opening chosen DirectSound Input device failed. No microphone capture will be done.</source>
         <translation>Otevření vybraného vstupního zařízení DirectSound selhalo. Nebude prováděn záznam mikrofonu.</translation>
     </message>
@@ -3352,22 +3352,22 @@ Jmenovka serveru. Takto se bude server jmenovat ve Vašem seznamu serverů a mů
 <context>
     <name>DXAudioOutput</name>
     <message>
-        <location line="-167"/>
+        <location line="-166"/>
         <source>Opening chosen DirectSound Output failed. No audio will be heard.</source>
         <translation>Otevření vybraného výstupu DirectSound selhalo. Nebude slyšet žádný zvuk.</translation>
     </message>
     <message>
-        <location line="-82"/>
+        <location line="-77"/>
         <source>Opening chosen DirectSound Output failed. Default device will be used.</source>
         <translation>Otevření vybraného výstupu DirectSound selhalo. Bude použito výchozí zařízení.</translation>
     </message>
     <message>
-        <location line="-247"/>
+        <location line="-243"/>
         <source>Default DirectSound Voice Output</source>
         <translation>Výchozí Výstup Hlasu DirectSound</translation>
     </message>
     <message>
-        <location line="+325"/>
+        <location line="+316"/>
         <source>Lost DirectSound output device.</source>
         <translation>Ztracené výstupní zařízení DirectSound.</translation>
     </message>
@@ -3375,7 +3375,7 @@ Jmenovka serveru. Takto se bude server jmenovat ve Vašem seznamu serverů a mů
 <context>
     <name>Database</name>
     <message>
-        <location filename="Database.cpp" line="+89"/>
+        <location filename="Database.cpp" line="+114"/>
         <source>Mumble failed to initialize a database in any
 of the possible locations.</source>
         <translation>Mumble nedokázalo spustit databázi
@@ -3482,7 +3482,7 @@ v žádném z možných míst.</translation>
 <context>
     <name>GlobalShortcutConfig</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="+710"/>
+        <location filename="GlobalShortcut.cpp" line="+721"/>
         <source>Shortcuts</source>
         <translation>Zkratky</translation>
     </message>
@@ -4313,7 +4313,7 @@ Toto pole popisuje velikost LCD zařízení. Velikost je udávána buď v pixele
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="main.cpp" line="-271"/>
+        <location filename="main.cpp" line="-273"/>
         <source>Usage: mumble [options] [&lt;url&gt;]
 
 &lt;url&gt; specifies a URL to connect to after startup instead of showing
@@ -4353,7 +4353,7 @@ Platné možnosti jsou:
         <translation>Vyvolání</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>Welcome to Mumble.</source>
         <translation>Vítejte v aplikaci Mumble.</translation>
     </message>
@@ -4364,7 +4364,7 @@ Platné možnosti jsou:
     </message>
     <message>
         <location filename="MainWindow.cpp" line="+182"/>
-        <location line="+2127"/>
+        <location line="+2150"/>
         <source>Root</source>
         <translation>Kořen</translation>
     </message>
@@ -4407,21 +4407,6 @@ Platné možnosti jsou:
         <location/>
         <source>Disconnects you from the server.</source>
         <translation>Odpojí Vás od serveru.</translation>
-    </message>
-    <message>
-        <location/>
-        <source>&amp;Ban lists</source>
-        <translation>Seznam &amp;zákazů</translation>
-    </message>
-    <message>
-        <location/>
-        <source>Edit ban lists on server</source>
-        <translation>Upravit seznam zákazů na serveru</translation>
-    </message>
-    <message>
-        <location/>
-        <source>This lets you edit the server-side IP ban lists.</source>
-        <translation>Toto Vám umožní upravit seznamy zakázaných IP adres na straně serveru.</translation>
     </message>
     <message>
         <location/>
@@ -4895,9 +4880,9 @@ Platné možnosti jsou:
         <translation>Připojí se k webové stránce Mumble pro zjištění, je-li nová verze dostupná, a oznámí Vám to vhodným odkazem na stažení, pokud tomu opravdu tak je.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="-2031"/>
+        <location filename="MainWindow.cpp" line="-2054"/>
         <location line="+15"/>
-        <location line="+2226"/>
+        <location line="+2249"/>
         <source>Mumble -- %1</source>
         <translation>Mumble -- %1 </translation>
     </message>
@@ -4907,7 +4892,7 @@ Platné možnosti jsou:
         <translation>Toto zobrazí nedávnou aktivitu. Připojování k serverům, chyby a informační zprávy jsou všechny zobrazeny zde.&lt;br /&gt; Abyste přesně nastavili, které zprávy se zde zobrazí, použijte z menu příkaz &lt;b&gt;Nastavení&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="-2317"/>
+        <location filename="MainWindow.cpp" line="-2340"/>
         <source>&amp;Channel</source>
         <translation>&amp;Kanál</translation>
     </message>
@@ -4976,7 +4961,7 @@ Platné možnosti jsou:
         <translation>Přepnout stav překryvu ve hře.</translation>
     </message>
     <message>
-        <location line="+667"/>
+        <location line="+679"/>
         <source>Reconnecting.</source>
         <translation>Znovu se připojuji.</translation>
     </message>
@@ -5051,12 +5036,13 @@ Platné možnosti jsou:
         <translation>O Qt</translation>
     </message>
     <message>
-        <location line="+430"/>
+        <location line="+441"/>
         <source>Server connection failed: %1.</source>
         <translation>Připojování k serveru selhalo: %1.</translation>
     </message>
     <message>
         <location line="+13"/>
+        <location filename="Messages.cpp" line="+95"/>
         <source>Invalid username</source>
         <translation>Neplatné jméno uživatele</translation>
     </message>
@@ -5072,6 +5058,7 @@ Platné možnosti jsou:
     </message>
     <message>
         <location line="+13"/>
+        <location filename="Messages.cpp" line="+9"/>
         <source>Wrong password</source>
         <translation>Špatné heslo</translation>
     </message>
@@ -5086,7 +5073,7 @@ Platné možnosti jsou:
         <translation>Odpojeno od serveru.</translation>
     </message>
     <message>
-        <location filename="Messages.cpp" line="+285"/>
+        <location filename="Messages.cpp" line="+208"/>
         <source>%1 is now muted and deafened.</source>
         <translation>%1 je nyní zeslaben a ohlušen.</translation>
     </message>
@@ -5167,12 +5154,17 @@ Platné možnosti jsou:
         <translation>%1 vstoupil do kanálu.</translation>
     </message>
     <message>
-        <location line="-354"/>
+        <location line="-358"/>
         <source>Server connection rejected: %1.</source>
         <translation>Spojení se serverem odmítnuto: %1.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-6"/>
+        <source>Your account information can not be verified currently. Please try again later</source>
+        <translation>Informace o vašem účtu nemohou být momentálně ověřeny. Zkuste to prosím později</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <location line="+48"/>
         <source>Welcome message: %1</source>
         <translation>Uvítací zpráva: %1</translation>
@@ -5236,6 +5228,11 @@ Platné možnosti jsou:
         <location line="+4"/>
         <source>Channel is full.</source>
         <translation>Kanál je plný.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Channel nesting limit reached.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -5439,7 +5436,7 @@ Platné možnosti jsou:
         <translation>Toto zobrazí podrobné informace o připojení k serveru.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="-1829"/>
+        <location filename="MainWindow.cpp" line="-1840"/>
         <source>Opening URL %1</source>
         <translation>Otevírám URL %1</translation>
     </message>
@@ -5517,7 +5514,7 @@ Platné možnosti jsou:
     </message>
     <message>
         <location line="+4"/>
-        <location line="+1327"/>
+        <location line="+1338"/>
         <source>&amp;View Certificate</source>
         <translation>Zobrazit &amp;Certifikát</translation>
     </message>
@@ -5527,7 +5524,7 @@ Platné možnosti jsou:
         <translation>Tento server používá starý šifrovací standard, a nebude nadále podporován novými verzemi Mumble.</translation>
     </message>
     <message>
-        <location line="-1465"/>
+        <location line="-1476"/>
         <location line="+354"/>
         <source>Register yourself as %1</source>
         <translation>Registrovat se jako %1</translation>
@@ -5570,7 +5567,7 @@ Platné možnosti jsou:
         <translation>Zpráva do kanálu %1</translation>
     </message>
     <message>
-        <location line="+541"/>
+        <location line="+552"/>
         <source>Connected.</source>
         <translation>Připojen.</translation>
     </message>
@@ -5585,7 +5582,7 @@ Platné možnosti jsou:
         <translation>Ověření SSL selhalo: %1</translation>
     </message>
     <message>
-        <location line="-2223"/>
+        <location line="-2246"/>
         <source>&amp;User</source>
         <translation>&amp;Uživatel</translation>
     </message>
@@ -5602,7 +5599,7 @@ Platné možnosti jsou:
         <translation>Propojit Kanál</translation>
     </message>
     <message>
-        <location line="+806"/>
+        <location line="+818"/>
         <source>&lt;h2&gt;Control channel&lt;/h2&gt;&lt;p&gt;Encrypted with %1 bit %2&lt;br /&gt;%3 ms average latency (%4 deviation)&lt;/p&gt;&lt;p&gt;Remote host %5 (port %6)&lt;/p&gt;</source>
         <translation>&lt;h2&gt;Kontrolní kanál&lt;/h2&gt;&lt;p&gt;Šifrován pomocí %1 bit %2&lt;br /&gt;průměrné zpoždění %3 ms (odchylka %4)&lt;/p&gt;&lt;p&gt;Vzdálený hostitel %5 (port %6)&lt;/p&gt;</translation>
     </message>
@@ -5623,7 +5620,7 @@ Platné možnosti jsou:
         <translation>Do %1 (Strom): %2</translation>
     </message>
     <message>
-        <location line="+669"/>
+        <location line="+680"/>
         <source>&lt;b&gt;WARNING:&lt;/b&gt; The server presented a certificate that was different from the stored one.</source>
         <translation>&lt;b&gt;VAROVÁNÍ:&lt;/b&gt; Server předložil certifikát, který se liší od uloženého.</translation>
     </message>
@@ -5639,11 +5636,13 @@ Platné možnosti jsou:
     </message>
     <message>
         <location line="+48"/>
+        <location filename="Messages.cpp" line="-699"/>
         <source>Username in use</source>
         <translation>Uživatelské jméno se používá</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="Messages.cpp" line="+3"/>
         <source>Wrong certificate or password</source>
         <translation>Špatný certifikát nebo heslo</translation>
     </message>
@@ -5695,7 +5694,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Formát obrázku nerozpoznán.</translation>
     </message>
     <message>
-        <location line="-1648"/>
+        <location line="-1659"/>
         <source>Voice channel is sent over control channel.</source>
         <translation>Zvukový kanál je posílán přes kontrolní kanál.</translation>
     </message>
@@ -5760,7 +5759,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Pošle textovou zprávu všem uživatelům v kanálu.</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="-1328"/>
+        <location filename="MainWindow.cpp" line="-1339"/>
         <source>Mumble is currently connected to a server. Do you want to Close or Minimize it?</source>
         <translation>Mumble je nyní připojen k serveru. Opravdu ho chcete Zavřit nebo Minimalizovat?</translation>
     </message>
@@ -5776,7 +5775,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Minimalizovat</translation>
     </message>
     <message>
-        <location line="-191"/>
+        <location line="-192"/>
         <source>Mute Self</source>
         <comment>Global Shortcut</comment>
         <translation>Zeslabit Se</translation>
@@ -5818,7 +5817,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Šeptat/Křičet</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>&amp;Window</source>
         <translation>&amp;Okno</translation>
     </message>
@@ -5828,7 +5827,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Ctrl+M</translation>
     </message>
     <message>
-        <location line="-31"/>
+        <location line="-32"/>
         <source>Toggle Minimal</source>
         <comment>Global Shortcut</comment>
         <translation>Zapnout Minimálni Zobrazení</translation>
@@ -5861,14 +5860,14 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>Snížit Hlasitost (-10%)</translation>
     </message>
     <message>
-        <location line="+67"/>
-        <location line="+2268"/>
+        <location line="+68"/>
+        <location line="+2290"/>
         <source>&lt;center&gt;Not connected&lt;/center&gt;</source>
         <oldsource>Not connected</oldsource>
         <translation>&lt;center&gt;Nepřipojen&lt;/center&gt;</translation>
     </message>
     <message>
-        <location line="-1995"/>
+        <location line="-2006"/>
         <source>Clear</source>
         <translation>Vyčistit</translation>
     </message>
@@ -5894,7 +5893,7 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <translation>&amp;Odpojit</translation>
     </message>
     <message>
-        <location filename="Messages.cpp" line="-183"/>
+        <location filename="Messages.cpp" line="+513"/>
         <location line="+1"/>
         <source>Server</source>
         <comment>message from</comment>
@@ -6044,6 +6043,21 @@ Jinak přerušte a zkontrolujte Váš certifikát a uživatelské jméno.</trans
         <location/>
         <source>Copies a link to this channel to the clipboard.</source>
         <translation>Zkopíruje odkaz na tento kanál do schránky.</translation>
+    </message>
+    <message>
+        <location/>
+        <source>&amp;Ban list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>Edit ban list on server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>This lets you edit the server-side IP ban list.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6459,7 +6473,7 @@ Zakáže klientu stahovat obrázky vnořené do zpráv chatu pomocí tagu img.</
         <translation>Pro více možností, na ně klikněte pravým tlačítkem.</translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+223"/>
         <source>Overlay</source>
         <translation>Překryv</translation>
     </message>
@@ -6985,7 +6999,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>Plugins</name>
     <message>
-        <location filename="Plugins.cpp" line="+327"/>
+        <location filename="Plugins.cpp" line="+333"/>
         <source>Skipping plugin update in debug mode.</source>
         <translation>V režimu ladění přeskakuji aktualizaci zásuvných modulů.</translation>
     </message>
@@ -7136,7 +7150,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>ServerHandler</name>
     <message>
-        <location filename="ServerHandler.cpp" line="+447"/>
+        <location filename="ServerHandler.cpp" line="+470"/>
         <source>UDP packets cannot be sent to or received from the server. Switching to TCP mode.</source>
         <translation>Pakety UDP nelze na server odeslat ani je ze serveru přijímat. Přepínám na režim TCP.</translation>
     </message>
@@ -7156,7 +7170,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
         <translation>Pakety UDP lze na server odeslat i je ze serveru přijímat. Přepínám zpět na režim UDP.</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+39"/>
         <source>Connection timed out</source>
         <translation>Spojení vypršelo</translation>
     </message>
@@ -7212,7 +7226,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>ShortcutActionWidget</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="-549"/>
+        <location filename="GlobalShortcut.cpp" line="-558"/>
         <source>Unassigned</source>
         <translation>Nepřiřazeno</translation>
     </message>
@@ -7220,7 +7234,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>ShortcutDelegate</name>
     <message>
-        <location line="+361"/>
+        <location line="+370"/>
         <source>On</source>
         <translation>Zapnuto</translation>
     </message>
@@ -7243,7 +7257,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>ShortcutKeyWidget</name>
     <message>
-        <location line="-435"/>
+        <location line="-444"/>
         <source>Press Shortcut</source>
         <translation>Zmáčkněte Zkratku</translation>
     </message>
@@ -7267,6 +7281,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
     </message>
     <message>
         <location line="+5"/>
+        <location line="+6"/>
         <source>Subchannel #%1</source>
         <translation>Podkanál #%1</translation>
     </message>
@@ -7299,6 +7314,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
         <translation>Současný</translation>
     </message>
     <message>
+        <location line="+3"/>
         <location line="+2"/>
         <source>Subchannel #%1</source>
         <translation>Podkanál #%1</translation>
@@ -7318,7 +7334,7 @@ Pro aktualizaci těchto souborů na jejich poslední verzi, klikněte na tlačí
 <context>
     <name>ShortcutToggleWidget</name>
     <message>
-        <location line="-259"/>
+        <location line="-268"/>
         <source>Off</source>
         <translation>Vypnuto</translation>
     </message>

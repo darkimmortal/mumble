@@ -149,7 +149,7 @@ Bu değer Mumble&apos;ın kanalları kanal ağacında düzenleme şeklini deği�
     <message>
         <location/>
         <source>Make group inheritable to sub-channels</source>
-        <translation>Grubu alt kanallara verebilir olarak ayarla</translation>
+        <translation>Grubu alt kanallardan alınabilir olarak ayarla</translation>
     </message>
     <message>
         <location/>
@@ -425,12 +425,12 @@ Güncel olarak kanal için tanımlanmış tüm gruplar. Yeni bir grup oluşturma
     <message>
         <location/>
         <source>&lt;b&gt;Inherit&lt;/b&gt;&lt;br /&gt;This inherits all the members in the group from the parent, if the group is marked as &lt;i&gt;Inheritable&lt;/i&gt; in the parent channel.</source>
-        <translation>&lt;b&gt;Al&lt;/b&gt;&lt;br /&gt;Üst kanalda grup &lt;i&gt;Verebilir&lt;/i&gt; olarak işaretlendiyse, gruptaki tüm üyeleri üst kanaldan alır.</translation>
+        <translation>&lt;b&gt;Al&lt;/b&gt;&lt;br /&gt;Üst kanalda grup &lt;i&gt;Alınabilir&lt;/i&gt; olarak işaretlendiyse, gruptaki tüm üyeleri üst kanaldan alır.</translation>
     </message>
     <message>
         <location/>
         <source>&lt;b&gt;Inheritable&lt;/b&gt;&lt;br /&gt;This makes this group inheritable to sub-channels. If the group is non-inheritable, sub-channels are still free to create a new group with the same name.</source>
-        <translation>&lt;b&gt;Verebilir&lt;/b&gt;&lt;br /&gt;Bu, grubu alt kanallara verilebilir yapar. Eğer grup verilemezse, alt kanallar aynı isimde yeni bir grup oluşturabilirler.</translation>
+        <translation>&lt;b&gt;Alınabilir&lt;/b&gt;&lt;br /&gt;Bu, grubu alt kanallara verilebilir yapar. Eğer grup alt kanallardan alınamazsa, alt kanallar aynı isimde yeni bir grup oluşturabilirler.</translation>
     </message>
     <message>
         <location/>
@@ -442,26 +442,26 @@ Güncel olarak kanal için tanımlanmış tüm gruplar. Yeni bir grup oluşturma
         <source>&lt;b&gt;Members&lt;/b&gt;&lt;br /&gt;
 This list contains all members that were added to the group by the current channel. Be aware that this does not include members inherited by higher levels of the channel tree. These can be found in the &lt;i&gt;Inherited members&lt;/i&gt; list. To prevent this list to be inherited by lower level channels uncheck &lt;i&gt;Inheritable&lt;/i&gt; or manually add the members to the &lt;i&gt;Excluded members&lt;/i&gt; list.</source>
         <translation>&lt;b&gt;Üyeler&lt;/b&gt;&lt;br /&gt;
-Bu liste, güncel kanal tarafından gruba eklenen tüm üyeleri gösterir. Kanal hiyerarşisinin daha üst seviyeleri tarafından alınan üyelerin buna dahil olmayacağını unutmayınız. Bu üyeler &lt;i&gt;Alınmış üyeler&lt;/i&gt; listesinde bulunacaktır. Bu listenin alt kanallar tarafından alınmasını engellemek için &lt;i&gt;Alınabilir&lt;/i&gt; seçeneğini devre dışı bırakın veya üyeleri &lt;i&gt;Dışarıda bırakılanlar&lt;/i&gt; listesine elle ekleyin.</translation>
+Bu liste, güncel kanal tarafından gruba eklenen tüm üyeleri gösterir. Kanal hiyerarşisinin daha üst seviyeleri tarafından alınan üyelerin buna dahil olmayacağını unutmayınız. Bu üyeler &lt;i&gt;Alınmış üyeler&lt;/i&gt; listesinde bulunacaktır. Bu listenin alt kanallar tarafından alınmasını engellemek için &lt;i&gt;Alınabilir&lt;/i&gt; seçeneğini devre dışı bırakın veya üyeleri &lt;i&gt;Dışarıda bırakılan üyeler&lt;/i&gt; listesine elle ekleyin.</translation>
     </message>
     <message>
         <location/>
         <source>&lt;b&gt;Excluded members&lt;/b&gt;&lt;br /&gt;
 Contains a list of members whose group membership will not be inherited from the parent channel.</source>
         <translation>&lt;b&gt;Dışarıda bırakılan üyeler&lt;/b&gt;&lt;br /&gt;
-Üst kanaldan grup üyelikleri alınmayacak bir üyeler listesi içerir.</translation>
+Üst kanaldan grup üyelikleri alınmayacak üyeler listesi içerir.</translation>
     </message>
     <message>
         <location/>
         <source>&lt;b&gt;Inherited members&lt;/b&gt;&lt;br /&gt;
 Contains the list of members inherited by the current channel. Uncheck &lt;i&gt;Inherit&lt;/i&gt; to prevent inheritance from higher level channels.</source>
         <translation>&lt;b&gt;Alınmış üyeler&lt;/b&gt;&lt;br /&gt;
-Güncek kanal tarafından alınmış üyelerin listesini içerir. Üst kanallardan üye almamak için &lt;i&gt;Al&lt;/i&gt;ı devre dışı bırakınız.</translation>
+Güncel kanal tarafından alınmış üyelerin listesini içerir. Üst kanallardan üye almamak için &lt;i&gt;Al&lt;/i&gt; şıkkını devre dışı bırakınız.</translation>
     </message>
     <message>
         <location/>
         <source>This controls which group of users this entry applies to.&lt;br /&gt;Note that the group is evaluated in the context of the channel the entry is used in. For example, the default ACL on the Root channel gives &lt;i&gt;Write&lt;/i&gt; permission to the &lt;i&gt;admin&lt;/i&gt; group. This entry, if inherited by a channel, will give a user write privileges if he belongs to the &lt;i&gt;admin&lt;/i&gt; group in that channel, even if he doesn&apos;t belong to the &lt;i&gt;admin&lt;/i&gt; group in the channel where the ACL originated.&lt;br /&gt;If a group name starts with &apos;!&apos;, its membership is negated, and if it starts with &apos;~&apos;, it is evaluated in the channel the ACL was defined in, rather than the channel the ACL is active in.&lt;br /&gt;If a group name starts with &apos;#&apos;, it is interpreted as an access token. Users must have entered whatever follows the &apos;#&apos; in their list of access tokens to match. This can be used for very simple password access to channels for non-authenticated users.&lt;br /&gt;If a group name starts with &apos;$&apos;, it will only match users whose certificate hash matches what follows the &apos;$&apos;.&lt;br /&gt;A few special predefined groups are:&lt;br /&gt;&lt;b&gt;all&lt;/b&gt; - Everyone will match.&lt;br /&gt;&lt;b&gt;auth&lt;/b&gt; - All authenticated users will match.&lt;br /&gt;&lt;b&gt;sub,a,b,c&lt;/b&gt; - User currently in a sub-channel minimum &lt;i&gt;a&lt;/i&gt; common parents, and between &lt;i&gt;b&lt;/i&gt; and &lt;i&gt;c&lt;/i&gt; channels down the chain. See the website for more extensive documentation on this one.&lt;br /&gt;&lt;b&gt;in&lt;/b&gt; - Users currently in the channel will match (convenience for &apos;&lt;i&gt;sub,0,0,0&lt;/i&gt;&apos;).&lt;br /&gt;&lt;b&gt;out&lt;/b&gt; - Users outside the channel will match (convenience for &apos;&lt;i&gt;!sub,0,0,0&lt;/i&gt;&apos;).&lt;br /&gt;Note that an entry applies to either a user or a group, not both.</source>
-        <translation>Bu unsurun hangi kullanıcı gruplarına uygulandığını yönetir.&lt;br /&gt;Grubun, unsurun kullanıldığı kanal bağlamında değerlendirildiğini unutmayınız. Örneğin kök kanalda varsayılan EKL&apos;ler &lt;i&gt;yöneticiler&lt;/i&gt; grubuna &lt;i&gt;Yaz&lt;/i&gt; iznini verir. Bu unsur, bir kanal tarafından alındıysa, kullanıcı EKL&apos;in tanımlandığı kanalda &lt;i&gt;yöneticiler&lt;/i&gt; grubuna üye olmasa bile, bu kanalda &lt;i&gt;yöneticiler&lt;/i&gt; grubuna ait bir kullanıcıya yazma iznini verecektir. Bir grubun ismi &apos;!&apos; ile başlarsa üyeliği olumsuzlanır, &apos;~&apos; ile başlarsa EKL&apos;in etkin olduğu kanal yerine tanımlandığı kanal bağlamında değerlendirilir.&lt;br /&gt;Eğer bir grup ismi &apos;#&apos; ile başlarsa, bu bir erişim jetonu olarak değerlendirilir. Denk gelmesi için kullanıcıların erişim jeton listelerinde &apos;#&apos; karakterini izleyen metni girmiş olmaları gerekir. Kanallara kimliği doğrulanmamış kullanıcıların erişimi için çok basit bir parola sistemi olarak kullanılabilir.&lt;br /&gt;Eğer grup ismi &apos;$&apos; ile başlarsa, sadece sertifikalarının hash değerinin &apos;$&apos; karakterini izleyen metne denk geldiği kullanıcılar dikkate alınır.&lt;br /&gt;Birkaç öntanımlı özel grup vardır:&lt;br /&gt;&lt;b&gt;all&lt;/b&gt; - Herkes denk gelir.&lt;br /&gt;&lt;b&gt;auth&lt;/b&gt; - Kimliği doğrulanmış tüm kullanıcılar denk gelir.&lt;br /&gt;&lt;b&gt;sub,a,b,c&lt;/b&gt; - Güncel olarak &lt;i&gt;b&lt;/i&gt; ilâ &lt;i&gt;c&lt;/i&gt; sayı alt kanalda bulunan ve asgari &lt;i&gt;a&lt;/i&gt; paylaşılan üst kanalı bulunan kullanıcılar. Bu unsur hakkında daha fazla bilgi için sitemize bakınız.&lt;br /&gt;&lt;b&gt;in&lt;/b&gt; - Güncel olarak kanalda bulunan kullanıcılar denk gelir (&apos;&lt;i&gt;!sub,0,0,0&lt;/i&gt;&apos; değeri için bir kısaltma olarak görülebilir.)&lt;br /&gt;Bir unsurun ya bir gruba ya da bir kullanıcıya uygulandığını, ancak her ikisine aynı anda uygulanmadığını unutmayınız.</translation>
+        <translation>Bu unsurun hangi kullanıcı gruplarına uygulandığını yönetir.&lt;br /&gt;Grubun, unsurun kullanıldığı kanal bağlamında değerlendirildiğini unutmayınız. Örneğin kök kanalda varsayılan EKL&apos;ler &lt;i&gt;yöneticiler&lt;/i&gt; grubuna &lt;i&gt;Yaz&lt;/i&gt; iznini verir. Bu unsur, bir kanal tarafından alındıysa, kullanıcı EKL&apos;in tanımlandığı kanalda &lt;i&gt;yöneticiler&lt;/i&gt; grubuna üye olmasa bile, bu kanalda &lt;i&gt;yöneticiler&lt;/i&gt; grubuna ait bir kullanıcıya yazma iznini verecektir. Bir grubun ismi &apos;!&apos; ile başlarsa üyeliği olumsuzlanır, &apos;~&apos; ile başlarsa EKL&apos;in etkin olduğu kanal yerine tanımlandığı kanal bağlamında değerlendirilir.&lt;br /&gt;Eğer bir grup ismi &apos;#&apos; ile başlarsa, bu bir erişim jetonu olarak değerlendirilir. Denk gelmesi için kullanıcıların erişim jeton listelerinde &apos;#&apos; karakterini izleyen metni girmiş olmaları gerekir. Kanallara kimliği doğrulanmamış kullanıcıların erişimi için çok basit bir parola sistemi olarak kullanılabilir.&lt;br /&gt;Eğer grup ismi &apos;$&apos; ile başlarsa, sadece sertifikalarının hash değerinin &apos;$&apos; karakterini izleyen metne denk geldiği kullanıcılar dikkate alınır.&lt;br /&gt;Birkaç öntanımlı özel grup vardır:&lt;br /&gt;&lt;b&gt;all&lt;/b&gt; - Herkes denk gelir.&lt;br /&gt;&lt;b&gt;auth&lt;/b&gt; - Kimliği doğrulanmış tüm kullanıcılar denk gelir.&lt;br /&gt;&lt;b&gt;sub,a,b,c&lt;/b&gt; - Güncel olarak &lt;i&gt;b&lt;/i&gt; ilâ &lt;i&gt;c&lt;/i&gt; sayı alt kanalda bulunan ve asgari &lt;i&gt;a&lt;/i&gt; paylaşılan üst kanalı bulunan kullanıcılar. Bu unsur hakkında daha fazla bilgi için sitemize bakınız.&lt;br /&gt;&lt;b&gt;in&lt;/b&gt; - Güncel olarak kanalda bulunan kullanıcılar denk gelir (&apos;&lt;i&gt;sub,0,0,0&lt;/i&gt;&apos; değeri için bir kısaltma olarak görülebilir.)&lt;br /&gt;&lt;br /&gt;&lt;b&gt;out&lt;/b&gt; Kanal dışındaki kullanıcılar denk gelir (&apos;&lt;i&gt;!sub,0,0,0&lt;/i&gt;&apos; değeri için bir kısaltma olarak kabul edilebilir).&lt;br /&gt;Bir unsurun ya bir gruba ya da bir kullanıcıya uygulandığını, ancak her ikisine aynı anda uygulanmadığını unutmayınız.</translation>
     </message>
     <message>
         <location/>
@@ -503,7 +503,7 @@ Güncek kanal tarafından alınmış üyelerin listesini içerir. Üst kanallard
 <context>
     <name>ASIOConfig</name>
     <message>
-        <location filename="ASIOInput.cpp" line="+226"/>
+        <location filename="ASIOInput.cpp" line="+225"/>
         <source>%1 (version %2)</source>
         <translation>%1 (sürüm %2)</translation>
     </message>
@@ -1336,7 +1336,7 @@ Güncek kanal tarafından alınmış üyelerin listesini içerir. Üst kanallard
     <message>
         <location/>
         <source>Maximum distance, beyond which speech volume won&apos;t decrease</source>
-        <translation>Azami mesafe, geçildiğinde ses seviyesi düşülmeyecektir</translation>
+        <translation>Azami mesafe, geçildiğinde ses seviyesi düşürülmeyecektir</translation>
     </message>
     <message>
         <location/>
@@ -1502,12 +1502,12 @@ Güncek kanal tarafından alınmış üyelerin listesini içerir. Üst kanallard
 <context>
     <name>AudioOutputSample</name>
     <message>
-        <location filename="AudioOutputSample.cpp" line="+212"/>
+        <location filename="AudioOutputSample.cpp" line="+211"/>
         <source>Choose sound file</source>
         <translation>Ses dosyası seçiniz</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Invalid sound file</source>
         <translation>Geçersiz ses dosyası</translation>
     </message>
@@ -2137,7 +2137,7 @@ Sinirli ya da coştuğunuz zamanlardaki gibi yüksek sesle konuşunuz. Kontrol p
     <message>
         <location/>
         <source>In this configuration Mumble will use a &lt;b&gt;low amount of bandwidth&lt;/b&gt;. This will inevitably result in high latency and poor quality. Choose this only if your connection cannot handle the other settings. (16kbit/s, 60ms per packet)</source>
-        <translation>Bu yapılandırmada Mumble&apos;ın kullandığı&lt;b&gt;bant genişliği miktarı düşük&lt;/b&gt; olacaktır. Bu kaçınılmaz olarak yüksek gecikmelere ve vasat kaliteye yol açar. Bu seçeneği sadece bağlantınız diğer ayarları kaldıramıyorsa seçiniz. (16kbit/s, paket başına 60ms)</translation>
+        <translation>Bu yapılandırmada Mumble&apos;ın kullandığı &lt;b&gt;bant genişliği miktarı düşük&lt;/b&gt; olacaktır. Bu kaçınılmaz olarak yüksek gecikmelere ve vasat kaliteye yol açar. Bu seçeneği sadece bağlantınız diğer ayarları kaldıramıyorsa seçiniz. (16kbit/s, paket başına 60ms)</translation>
     </message>
     <message>
         <location/>
@@ -2231,7 +2231,7 @@ Sinirli ya da coştuğunuz zamanlardaki gibi yüksek sesle konuşunuz. Kontrol p
         <translation>Sona Erme Tarihi</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+41"/>
         <source>(none)</source>
         <translation>(boş)</translation>
     </message>
@@ -2309,7 +2309,7 @@ Sinirli ya da coştuğunuz zamanlardaki gibi yüksek sesle konuşunuz. Kontrol p
         <translation>Mumble Kullanıcısı</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="+454"/>
+        <location filename="main.cpp" line="+456"/>
         <source>&lt;b&gt;Certificate Expiry:&lt;/b&gt; Your certificate is about to expire. You need to renew it, or you will no longer be able to connect to servers you are registered on.</source>
         <translation>&lt;b&gt;Sertifika Ömrü:&lt;/b&gt; Sertifikanızın süresi dolmak üzere ve yenilemeniz lazım, aksi takdirde oturumunuz bulunan sunuculara bağlanamayacaksınız.</translation>
     </message>
@@ -2857,7 +2857,7 @@ It is &lt;b&gt;strongly&lt;/b&gt; recommended that you &lt;a href=&quot;http://m
 <context>
     <name>ConfigDialog</name>
     <message>
-        <location filename="ConfigDialog.cpp" line="+55"/>
+        <location filename="ConfigDialog.cpp" line="+57"/>
         <source>Accept changes</source>
         <translation>Değişiklikleri kabul et</translation>
     </message>
@@ -3304,17 +3304,17 @@ Sunucunun etiketi. Bu, sunucu listenizde sunucunun ismidir ve istediğinizi seç
         <translation>Varsayılan DirectSound Ses Girişi</translation>
     </message>
     <message>
-        <location line="+461"/>
+        <location line="+451"/>
         <source>Opening chosen DirectSound Input device failed. No microphone capture will be done.</source>
         <translation>Seçilen DirectSound Girdi cihazının açılışı başarısız oldu. Mikrofondan kayıt yapılmayacaktır.</translation>
     </message>
     <message>
-        <location line="-79"/>
+        <location line="-83"/>
         <source>Opening chosen DirectSound Input failed. Default device will be used.</source>
         <translation>DirectSound Girdi cihazının açılışı başarısız oldu. Varsayılan cihaz kullanılacaktır.</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+78"/>
         <source>Lost DirectSound input device.</source>
         <translation>DirectSound girdi cihazı kaybedildi.</translation>
     </message>
@@ -3322,17 +3322,17 @@ Sunucunun etiketi. Bu, sunucu listenizde sunucunun ismidir ve istediğinizi seç
 <context>
     <name>DXAudioOutput</name>
     <message>
-        <location line="-496"/>
+        <location line="-486"/>
         <source>Default DirectSound Voice Output</source>
         <translation>Varsayılan DirectSound Ses Çıktısı</translation>
     </message>
     <message>
-        <location line="+247"/>
+        <location line="+243"/>
         <source>Opening chosen DirectSound Output failed. Default device will be used.</source>
         <translation>Seçilen DirectSound Çıktısı başarısız oldu. Varsayılan cihaz kullanılacaktır.</translation>
     </message>
     <message>
-        <location line="+78"/>
+        <location line="+73"/>
         <source>Lost DirectSound output device.</source>
         <translation>DirectSound çıktı cihazı kaybedildi.</translation>
     </message>
@@ -3345,7 +3345,7 @@ Sunucunun etiketi. Bu, sunucu listenizde sunucunun ismidir ve istediğinizi seç
 <context>
     <name>Database</name>
     <message>
-        <location filename="Database.cpp" line="+89"/>
+        <location filename="Database.cpp" line="+114"/>
         <source>Mumble failed to initialize a database in any
 of the possible locations.</source>
         <translation>Mumble mümkün yerlerin hiçbirinde
@@ -3362,7 +3362,7 @@ veritabanını başlatamadı.</translation>
     <message>
         <location filename="CustomElements.cpp" line="+180"/>
         <source>Drag here</source>
-        <translation>Buraya sürükle</translation>
+        <translation>Buradan sürükle</translation>
     </message>
 </context>
 <context>
@@ -3451,7 +3451,7 @@ veritabanını başlatamadı.</translation>
 <context>
     <name>GlobalShortcutConfig</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="+710"/>
+        <location filename="GlobalShortcut.cpp" line="+721"/>
         <source>Shortcuts</source>
         <translation>Kısayollar</translation>
     </message>
@@ -4278,12 +4278,12 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     <name>MainWindow</name>
     <message>
         <location filename="MainWindow.cpp" line="+182"/>
-        <location line="+2127"/>
+        <location line="+2150"/>
         <source>Root</source>
         <translation>Kök</translation>
     </message>
     <message>
-        <location line="-2075"/>
+        <location line="-2098"/>
         <source>Push-to-Talk</source>
         <comment>Global Shortcut</comment>
         <translation>Bas-ve-Konuş</translation>
@@ -4362,12 +4362,12 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     <message>
         <location filename="MainWindow.cpp" line="+4"/>
         <location line="+15"/>
-        <location line="+2226"/>
+        <location line="+2249"/>
         <source>Mumble -- %1</source>
         <translation>Mumble -- %1</translation>
     </message>
     <message>
-        <location line="-2222"/>
+        <location line="-2244"/>
         <source>&amp;Window</source>
         <translation>&amp;Pencere</translation>
     </message>
@@ -4393,7 +4393,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>Mumble hâlihazırda bir sunucuya bağlıdır. Kapatmak mı istiyorsunuz, küçültmek mi?</translation>
     </message>
     <message>
-        <location line="-189"/>
+        <location line="-190"/>
         <source>Mute Self</source>
         <comment>Global Shortcut</comment>
         <translation>Kendini Sustur</translation>
@@ -4434,13 +4434,13 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>Fısılda/Bağır</translation>
     </message>
     <message>
-        <location line="+60"/>
-        <location line="+2268"/>
+        <location line="+61"/>
+        <location line="+2290"/>
         <source>&lt;center&gt;Not connected&lt;/center&gt;</source>
         <translation>&lt;center&gt;Çevrimdışı&lt;/center&gt;</translation>
     </message>
     <message>
-        <location line="-1995"/>
+        <location line="-2006"/>
         <source>Clear</source>
         <translation>Temizle</translation>
     </message>
@@ -4554,7 +4554,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>%1 adlı kanala mesaj</translation>
     </message>
     <message>
-        <location line="+541"/>
+        <location line="+552"/>
         <source>Connected.</source>
         <translation>Bağlandı.</translation>
     </message>
@@ -4600,12 +4600,12 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>Görsel biçimi tanınamadı.</translation>
     </message>
     <message>
-        <location line="-1648"/>
+        <location line="-1659"/>
         <source>Voice channel is sent over control channel.</source>
         <translation>Ses kanalı kontrol kanalından gönderilmekte.</translation>
     </message>
     <message>
-        <location line="-898"/>
+        <location line="-910"/>
         <source>&amp;User</source>
         <translation>K&amp;ullanıcı</translation>
     </message>
@@ -4627,7 +4627,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>Kanal Bağla</translation>
     </message>
     <message>
-        <location line="+687"/>
+        <location line="+699"/>
         <source>Change your comment</source>
         <translation>Yorumu değiştir</translation>
     </message>
@@ -4674,7 +4674,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     <message>
         <location line="+0"/>
         <source>Resync</source>
-        <translation>Tekrar Senkr</translation>
+        <translation>Tekrar Senkronize</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4688,12 +4688,12 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     </message>
     <message>
         <location line="+4"/>
-        <location line="+1327"/>
+        <location line="+1338"/>
         <source>&amp;View Certificate</source>
         <translation>&amp;Sertifika Görüntüle</translation>
     </message>
     <message>
-        <location line="-1052"/>
+        <location line="-1063"/>
         <location line="+19"/>
         <source>Enter reason</source>
         <translation>Sebep gir</translation>
@@ -4778,7 +4778,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
         <translation>Qt Hakkında</translation>
     </message>
     <message>
-        <location line="+386"/>
+        <location line="+397"/>
         <source>SSL Verification failed: %1</source>
         <translation>SSL denetlemesi başarısız oldu: %1</translation>
     </message>
@@ -4814,6 +4814,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     </message>
     <message>
         <location line="+11"/>
+        <location filename="Messages.cpp" line="+95"/>
         <source>Invalid username</source>
         <translation>Geçersiz kullanıcı ismi</translation>
     </message>
@@ -4824,6 +4825,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     </message>
     <message>
         <location line="+4"/>
+        <location filename="Messages.cpp" line="+3"/>
         <source>Username in use</source>
         <translation>İsim kullanılmakta</translation>
     </message>
@@ -4834,6 +4836,7 @@ Bu alan LCD cihazın boyutunu belirtir. Boyut ya piksel olarak (Grafik LCD ekran
     </message>
     <message>
         <location line="+5"/>
+        <location filename="Messages.cpp" line="+3"/>
         <source>Wrong certificate or password</source>
         <translation>Yanlış sertifika ya da parola</translation>
     </message>
@@ -4848,6 +4851,7 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
     </message>
     <message>
         <location line="+7"/>
+        <location filename="Messages.cpp" line="+3"/>
         <source>Wrong password</source>
         <translation>Yanlış parola</translation>
     </message>
@@ -4920,21 +4924,6 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <location/>
         <source>Disconnects you from the server.</source>
         <translation>Sunucuyla bağlantıyı keser.</translation>
-    </message>
-    <message>
-        <location/>
-        <source>&amp;Ban lists</source>
-        <translation>Ya&amp;saklama listeleri</translation>
-    </message>
-    <message>
-        <location/>
-        <source>Edit ban lists on server</source>
-        <translation>Sunucudaki yasaklama listelerini düzenle</translation>
-    </message>
-    <message>
-        <location/>
-        <source>This lets you edit the server-side IP ban lists.</source>
-        <translation>Sunucu tarafında İP yasaklama listelerini düzenlemenize imkân sağlar.</translation>
     </message>
     <message>
         <location/>
@@ -5438,7 +5427,7 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <translation>Kütük ve menü pencerelerinin saklandığı küçük görüntü kipini açıp kapatır.</translation>
     </message>
     <message>
-        <location filename="Messages.cpp" line="+358"/>
+        <location filename="Messages.cpp" line="+281"/>
         <source>You muted and deafened %1.</source>
         <translation>%1 adlı kullanıcıyı susturdunuz ve sağır ettiniz.</translation>
     </message>
@@ -5498,7 +5487,12 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <translation>%1 artık susturuldu ve sağır edildi.</translation>
     </message>
     <message>
-        <location line="-185"/>
+        <location line="-205"/>
+        <source>Your account information can not be verified currently. Please try again later</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <location line="+48"/>
         <source>Welcome message: %1</source>
         <translation>Hoş geldiniz mesajı: %1</translation>
@@ -5562,6 +5556,11 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <location line="+4"/>
         <source>Channel is full.</source>
         <translation>Kanal dolu.</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Channel nesting limit reached.</source>
+        <translation>Kanal yuvalama sınırına ulaşıldı.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -5766,12 +5765,12 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <translation>%1 kanala katıldı.</translation>
     </message>
     <message>
-        <location line="-354"/>
+        <location line="-358"/>
         <source>Server connection rejected: %1.</source>
         <translation>Sunucu bağlantısı reddedildi: %1.</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+147"/>
         <source>Denied: %1.</source>
         <translation>Reddedildi: %1.</translation>
     </message>
@@ -5791,7 +5790,7 @@ deneyiniz. Yoksa iptal edip parolanızı kontrol ediniz.</translation>
         <translation>UserModel::dropMimeData&apos;da bilinmeyen Kanal Kaydırma kipi.</translation>
     </message>
     <message>
-        <location filename="main.cpp" line="-271"/>
+        <location filename="main.cpp" line="-273"/>
         <source>Usage: mumble [options] [&lt;url&gt;]
 
 &lt;url&gt; specifies a URL to connect to after startup instead of showing
@@ -5831,7 +5830,7 @@ Geçerli seçenekler şunlardır:
         <translation>Çağrı</translation>
     </message>
     <message>
-        <location line="+192"/>
+        <location line="+194"/>
         <source>Welcome to Mumble.</source>
         <translation>Mumble&apos;a Hoş Geldiniz.</translation>
     </message>
@@ -6000,6 +5999,21 @@ Geçerli seçenekler şunlardır:
         <source>Silently drops all text messages from the user.</source>
         <translation>Kullanıcının tüm metin mesajlarını sessiz sedasız görmezden gelir.</translation>
     </message>
+    <message>
+        <location/>
+        <source>&amp;Ban list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>Edit ban list on server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location/>
+        <source>This lets you edit the server-side IP ban list.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>NetworkConfig</name>
@@ -6011,7 +6025,7 @@ Geçerli seçenekler şunlardır:
     <message>
         <location line="+36"/>
         <source>Updates are mandatory when using snapshot releases.</source>
-        <translation>Snapshot sürümler kullanıldığında güncellemeler mecburidir.</translation>
+        <translation>Geliştirme sürümleri kullanıldığında güncellemeler mecburidir.</translation>
     </message>
     <message>
         <location filename="NetworkConfig.ui"/>
@@ -6106,7 +6120,7 @@ Geçerli seçenekler şunlardır:
     <message>
         <location/>
         <source>Don&apos;t send certificate to server and don&apos;t save passwords. (Not saved).</source>
-        <translation>Sunucuya sertifika gönderme ve parolaları kaydetme (Kaydedilmez).</translation>
+        <translation>Sunucuya sertifika gönderme ve parolaları kaydetme (Seçenek durumu kaydedilmez).</translation>
     </message>
     <message>
         <location/>
@@ -6390,7 +6404,7 @@ Prevents the client from downloading images embedded into chat messages with the
         <translation>Daha fazla bilgi için kullanıcıya sağ buton ile tıklayın.</translation>
     </message>
     <message>
-        <location line="+222"/>
+        <location line="+223"/>
         <source>Overlay</source>
         <translation>Yerpaylaşan</translation>
     </message>
@@ -6936,7 +6950,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>Plugins</name>
     <message>
-        <location filename="Plugins.cpp" line="+327"/>
+        <location filename="Plugins.cpp" line="+333"/>
         <source>Skipping plugin update in debug mode.</source>
         <translation>Hata ayıklama kipinde eklenti güncellemesi atlanıyor.</translation>
     </message>
@@ -7087,7 +7101,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>ServerHandler</name>
     <message>
-        <location filename="ServerHandler.cpp" line="+447"/>
+        <location filename="ServerHandler.cpp" line="+470"/>
         <source>UDP packets cannot be sent to or received from the server. Switching to TCP mode.</source>
         <translation>Sunucuya UDP paketleri gönderilemiyor ya da ondan bu paketler alınamıyor. TCP kipine geçiliyor.</translation>
     </message>
@@ -7107,7 +7121,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
         <translation>UDP paketleri sunucuya gönderilebiliyor ve ondan alınabiliyor. UDP kipine dönüş yapılıyor.</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+39"/>
         <source>Connection timed out</source>
         <translation>Bağlantı zaman aşımına uğradı</translation>
     </message>
@@ -7163,7 +7177,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>ShortcutActionWidget</name>
     <message>
-        <location filename="GlobalShortcut.cpp" line="-549"/>
+        <location filename="GlobalShortcut.cpp" line="-558"/>
         <source>Unassigned</source>
         <translation>Atanmamış</translation>
     </message>
@@ -7171,7 +7185,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>ShortcutDelegate</name>
     <message>
-        <location line="+361"/>
+        <location line="+370"/>
         <source>On</source>
         <translation>Açık</translation>
     </message>
@@ -7194,7 +7208,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>ShortcutKeyWidget</name>
     <message>
-        <location line="-435"/>
+        <location line="-444"/>
         <source>Press Shortcut</source>
         <translation>Bir kısayola basın</translation>
     </message>
@@ -7218,6 +7232,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
     </message>
     <message>
         <location line="+5"/>
+        <location line="+6"/>
         <source>Subchannel #%1</source>
         <translation>Alt kanal #%1</translation>
     </message>
@@ -7250,6 +7265,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
         <translation>Güncel</translation>
     </message>
     <message>
+        <location line="+3"/>
         <location line="+2"/>
         <source>Subchannel #%1</source>
         <translation>Alt kanal #%1</translation>
@@ -7268,7 +7284,7 @@ Bu dosyaları son sürümlerine güncellemek için aşağıdaki düğmeyi tıkla
 <context>
     <name>ShortcutToggleWidget</name>
     <message>
-        <location line="-259"/>
+        <location line="-268"/>
         <source>Off</source>
         <translation>Kapalı</translation>
     </message>
@@ -7459,7 +7475,7 @@ Erişim jetonu bir metindir ve kanallara erişimin çok basit bir şekilde yöne
     <message>
         <location/>
         <source>Resync</source>
-        <translation>Senkronizasyon</translation>
+        <translation>Tekrar Senkronize</translation>
     </message>
     <message>
         <location/>
@@ -7730,7 +7746,7 @@ Erişim jetonu bir metindir ve kanallara erişimin çok basit bir şekilde yöne
     <message>
         <location line="+23"/>
         <source>Downloading new snapshot from %1 to %2</source>
-        <translation>Yeni bir snapshot sürüm %1 konumundan %2 konumuna indiriliyor</translation>
+        <translation>Yeni bir geliştirme sürümü %1 konumundan %2 konumuna indiriliyor</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -8022,7 +8038,7 @@ Daha fazla bilgi için sunucu yöneticisi ile irtibata geçiniz.</translation>
     <message>
         <location filename="VoiceRecorderDialog.ui"/>
         <source>Downmix</source>
-        <translation type="unfinished"></translation>
+        <translation>Kanalları azalt</translation>
     </message>
 </context>
 <context>
