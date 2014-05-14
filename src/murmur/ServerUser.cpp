@@ -35,7 +35,7 @@
 #include "ServerUser.h"
 #include "Meta.h"
 
-ServerUser::ServerUser(Server *p, QSslSocket *socket) : Connection(p, socket), User() {
+ServerUser::ServerUser(Server *p, QSslSocket *socket) : Connection(p, socket), User(), s(NULL) {
 	sState = ServerUser::Connected;
 	sUdpSocket = INVALID_SOCKET;
 
@@ -50,6 +50,8 @@ ServerUser::ServerUser(Server *p, QSslSocket *socket) : Connection(p, socket), U
 	uiVersion = 0;
 	bVerified = true;
 	iLastPermissionCheck = -1;
+	
+	bOpus = false;
 }
 
 

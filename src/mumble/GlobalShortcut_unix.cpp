@@ -28,6 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "GlobalShortcut_unix.h"
 
 GlobalShortcutEngine *GlobalShortcutEngine::platformInit() {
@@ -35,7 +37,8 @@ GlobalShortcutEngine *GlobalShortcutEngine::platformInit() {
 }
 
 GlobalShortcutX::GlobalShortcutX() {
-	bRunning=false;
+	iXIopcode =  -1;
+	bRunning = false;
 
 	display = NULL;
 

@@ -29,6 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "G15LCDEngine_lglcd.h"
 
 #define G15_MAX_DEV         5
@@ -99,7 +101,7 @@ QList<LCDDevice *> G15LCDEngineLGLCD::devices() const {
 
 /* -- */
 
-G15LCDDeviceLGLCD::G15LCDDeviceLGLCD(G15LCDEngineLGLCD *e) : LCDDevice() {
+G15LCDDeviceLGLCD::G15LCDDeviceLGLCD(G15LCDEngineLGLCD *e) : LCDDevice(), bEnabled(false) {
 	engine = e;
 }
 

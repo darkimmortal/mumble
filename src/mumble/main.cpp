@@ -28,6 +28,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "Overlay.h"
 #include "MainWindow.h"
 #include "ServerHandler.h"
@@ -54,6 +56,17 @@
 #include "CrashReporter.h"
 #include "FileEngine.h"
 #include "SocketRPC.h"
+
+#ifdef USE_STATIC
+// Keep in sync with mumble.pro QTPLUGIN list.
+Q_IMPORT_PLUGIN(qtaccessiblewidgets)
+Q_IMPORT_PLUGIN(qico)
+Q_IMPORT_PLUGIN(qsvg)
+Q_IMPORT_PLUGIN(qsvgicon)
+#ifdef Q_OS_MAC
+Q_IMPORT_PLUGIN(qicnsicon)
+#endif
+#endif
 
 #ifdef BOOST_NO_EXCEPTIONS
 namespace boost {
@@ -86,7 +99,6 @@ void QAppMumble::commitData(QSessionManager &) {
 }
 
 bool QAppMumble::event(QEvent *e) {
-#if QT_VERSION >= 0x040600
 	if (e->type() == QEvent::FileOpen) {
 		QFileOpenEvent *foe = static_cast<QFileOpenEvent *>(e);
 		if (! g.mw) {
@@ -96,7 +108,6 @@ bool QAppMumble::event(QEvent *e) {
 		}
 		return true;
 	}
-#endif
 	return QApplication::event(e);
 }
 
@@ -142,6 +153,15 @@ int main(int argc, char **argv) {
 	a.setOrganizationDomain(QLatin1String("mumble.sourceforge.net"));
 	a.setQuitOnLastWindowClosed(false);
 
+	#ifdef USE_SBCELT
+	{
+		// For now, force Mumble to use sbcelt-helper from the same directory as the 'mumble' executable.
+		QDir d(a.applicationDirPath());
+		QString helper = d.absoluteFilePath(QString::fromLatin1("sbcelt-helper"));
+		setenv("SBCELT_HELPER_BINARY", helper.toUtf8().constData(), 1);
+	}
+#endif
+
 	Global::g_global_struct = new Global();
 
 	qsrand(QDateTime::currentDateTime().toTime_t());
@@ -155,9 +175,36 @@ int main(int argc, char **argv) {
 	if (a.arguments().count() > 1) {
 		QStringList args = a.arguments();
 		for (int i = 1; i < args.count(); ++i) {
-			if (args.at(i) == QLatin1String("-m")) {
+			if (args.at(i) == QLatin1String("-h") || args.at(i) == QLatin1String("--help")
+#if defined(Q_OS_WIN)
+				|| args.at(i) == QLatin1String("/?")
+#endif
+			) {
+				QString helpmessage = MainWindow::tr( "Usage: mumble [options] [<url>]\n"
+					"\n"
+					"<url> specifies a URL to connect to after startup instead of showing\n"
+					"the connection window, and has the following form:\n"
+					"mumble://[<username>[:<password>]@]<host>[:<port>][/<channel>[/<subchannel>...]][?version=<x.y.z>]\n"
+					"\n"
+					"The version query parameter has to be set in order to invoke the\n"
+					"correct client version. It currently defaults to 1.2.0.\n"
+					"\n"
+					"Valid options are:\n"
+					"  -h, --help    Show this help text and exit.\n"
+					"  -m, --multiple\n"
+					"                Allow multiple instances of the client to be started.\n"
+					"  -n, --noidentity\n"
+					"                Suppress loading of identity files (i.e., certificates.)\n"
+					);
+#if defined(Q_OS_WIN)
+				QMessageBox::information(NULL, MainWindow::tr("Invocation"), helpmessage);
+#else
+				printf("%s", qPrintable(helpmessage));
+#endif
+				return 1;
+			} else if (args.at(i) == QLatin1String("-m") || args.at(i) == QLatin1String("--multiple")) {
 				bAllowMultiple = true;
-			} else if (args.at(i) == QLatin1String("-n")) {
+			} else if (args.at(i) == QLatin1String("-n") || args.at(i) == QLatin1String("--noidentity")) {
 				g.s.bSuppressIdentity = true;
 			} else {
 				QUrl u = QUrl::fromEncoded(args.at(i).toUtf8());
@@ -195,18 +242,10 @@ int main(int argc, char **argv) {
 
 	if (! bAllowMultiple) {
 		if (url.isValid()) {
-			int major, minor, patch;
-			major = 1;
-			minor = 1;
-			patch = 0;
-
-			QString version = url.queryItemValue(QLatin1String("version"));
 #ifndef USE_DBUS
 			QMap<QString, QVariant> param;
 			param.insert(QLatin1String("href"), url);
 #endif
-			MumbleVersion::get(&major, &minor, &patch, version);
-
 			bool sent = false;
 #ifdef USE_DBUS
 			QDBusInterface qdbi(QLatin1String("net.sourceforge.mumble.mumble"), QLatin1String("/"), QLatin1String("net.sourceforge.mumble.Mumble"));
@@ -283,9 +322,8 @@ int main(int argc, char **argv) {
 	}
 #endif
 
-	qWarning("Locale is %s", qPrintable(qsSystemLocale));
-
-	QString locale = g.s.qsLanguage.isEmpty() ? qsSystemLocale : g.s.qsLanguage;
+	const QString locale = g.s.qsLanguage.isEmpty() ? qsSystemLocale : g.s.qsLanguage;
+	qWarning("Locale is \"%s\" (System: \"%s\")", qPrintable(locale), qPrintable(qsSystemLocale));
 
 	QTranslator translator;
 	if (translator.load(QLatin1String("translation:mumble_") + locale))
@@ -367,6 +405,16 @@ int main(int argc, char **argv) {
 	if (g.s.uiUpdateCounter == 0) {
 		// Previous version was an pre 1.2.3 release or this is the first run
 		runaudiowizard = true;
+
+	} else if (g.s.uiUpdateCounter == 1) {
+		// Previous versions used old idle action style, convert it
+
+		if (g.s.iIdleTime == 5 * 60) { // New default
+			g.s.iaeIdleAction = Settings::Nothing;
+		} else {
+			g.s.iIdleTime = 60 * qRound(g.s.iIdleTime / 60.); // Round to minutes
+			g.s.iaeIdleAction = Settings::Deafen; // Old behavior
+		}
 	}
 
 	if (runaudiowizard) {
@@ -375,7 +423,7 @@ int main(int argc, char **argv) {
 		delete aw;
 	}
 
-	g.s.uiUpdateCounter = 1;
+	g.s.uiUpdateCounter = 2;
 
 	if (! CertWizard::validateCert(g.s.kpCertificate)) {
 		QDir qd(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
@@ -407,16 +455,16 @@ int main(int argc, char **argv) {
 #ifdef QT_NO_DEBUG
 #ifndef SNAPSHOT_BUILD
 	if (g.s.bUpdateCheck)
+#endif
 		new VersionCheck(true, g.mw);
-#else
+#ifdef SNAPSHOT_BUILD
 	new VersionCheck(false, g.mw, true);
 #endif
 #else
 	g.mw->msgBox(MainWindow::tr("Skipping version check in debug mode."));
 #endif
-	if (g.s.bPluginOverlayCheck) {
+	if (g.s.bPluginCheck) {
 		g.p->checkUpdates();
-		g.o->checkUpdates();
 	}
 
 	if (url.isValid()) {

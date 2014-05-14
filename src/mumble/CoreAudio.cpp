@@ -29,7 +29,10 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "CoreAudio.h"
+
 #include "User.h"
 #include "Global.h"
 
@@ -55,6 +58,7 @@ class CoreAudioInit : public DeferInit {
 		CoreAudioInputRegistrar *cairReg;
 		CoreAudioOutputRegistrar *caorReg;
 	public:
+		CoreAudioInit() : cairReg(NULL), caorReg(NULL) {}
 		void initialize();
 		void destroy();
 };

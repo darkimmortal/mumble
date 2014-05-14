@@ -29,29 +29,31 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "MainWindow.h"
-#include "AudioWizard.h"
-#include "AudioInput.h"
-#include "ConnectDialog.h"
-#include "User.h"
-#include "Channel.h"
-#include "ACLEditor.h"
-#include "BanEditor.h"
-#include "UserEdit.h"
-#include "Connection.h"
-#include "ServerHandler.h"
+#include "mumble_pch.hpp"
+
 #include "About.h"
-#include "GlobalShortcut.h"
-#include "VersionCheck.h"
-#include "UserModel.h"
+#include "ACLEditor.h"
+#include "AudioInput.h"
 #include "AudioStats.h"
-#include "Plugins.h"
-#include "Log.h"
-#include "Overlay.h"
-#include "Global.h"
+#include "AudioWizard.h"
+#include "BanEditor.h"
+#include "Channel.h"
+#include "Connection.h"
+#include "ConnectDialog.h"
 #include "Database.h"
-#include "ViewCert.h"
+#include "Global.h"
+#include "GlobalShortcut.h"
+#include "Log.h"
+#include "MainWindow.h"
+#include "Overlay.h"
+#include "Plugins.h"
+#include "ServerHandler.h"
+#include "User.h"
+#include "UserEdit.h"
 #include "UserInformation.h"
+#include "UserModel.h"
+#include "VersionCheck.h"
+#include "ViewCert.h"
 
 #define ACTOR_INIT \
 	ClientUser *pSrc=NULL; \
@@ -85,11 +87,33 @@ void MainWindow::msgBanList(const MumbleProto::BanList &msg) {
 
 void MainWindow::msgReject(const MumbleProto::Reject &msg) {
 	rtLast = msg.type();
-	g.l->log(Log::ServerDisconnected, tr("Server connection rejected: %1.").arg(u8(msg.reason())));
+
+	QString reason(u8(msg.reason()));;
+
+	switch (rtLast) {
+		case MumbleProto::Reject_RejectType_InvalidUsername:
+			reason = tr("Invalid username");
+			break;
+		case MumbleProto::Reject_RejectType_UsernameInUse:
+			reason = tr("Username in use");
+			break;
+		case MumbleProto::Reject_RejectType_WrongUserPW:
+			reason = tr("Wrong certificate or password");
+			break;
+		case MumbleProto::Reject_RejectType_WrongServerPW:
+			reason = tr("Wrong password");
+			break;
+		default:
+			break;
+	}
+
+	g.l->log(Log::ServerDisconnected, tr("Server connection rejected: %1.").arg(reason));
 	g.l->setIgnore(Log::ServerDisconnected, 1);
 }
 
 void MainWindow::msgServerSync(const MumbleProto::ServerSync &msg) {
+	g.sh->sendPing(); // Send initial ping to establish UDP connection
+
 	g.uiSession = msg.session();
 	g.pPermissions = static_cast<ChanACL::Permissions>(msg.permissions());
 	g.l->clearIgnore();
@@ -224,6 +248,10 @@ void MainWindow::msgPermissionDenied(const MumbleProto::PermissionDenied &msg) {
 				g.l->log(Log::PermissionDenied, tr("Channel is full."));
 			}
 			break;
+		case MumbleProto::PermissionDenied_DenyType_NestingLimit: {
+				g.l->log(Log::PermissionDenied, tr("Channel nesting limit reached."));
+			}
+			break;
 		default: {
 				if (msg.has_reason())
 					g.l->log(Log::PermissionDenied, tr("Denied: %1.").arg(u8(msg.reason())));
@@ -262,6 +290,8 @@ void MainWindow::msgUserState(const MumbleProto::UserState &msg) {
 			pmModel->setFriendName(pDst, name);
 		if (Database::isLocalMuted(pDst->qsHash))
 			pDst->setLocalMute(true);
+		if (Database::isLocalIgnored(pDst->qsHash))
+			pDst->setLocalIgnore(true);
 	}
 
 	if (bNewUser)
@@ -295,7 +325,7 @@ void MainWindow::msgUserState(const MumbleProto::UserState &msg) {
 				} else {
 					g.l->log(Log::Recording, tr("Recording stopped"));
 				}
-			} else if (pDst->cChannel == pSelf->cChannel) {
+			} else if (pDst->cChannel->allLinks().contains(pSelf->cChannel)) {
 				if (pDst->bRecording) {
 					g.l->log(Log::Recording, tr("%1 started recording.").arg(Log::formatClientUser(pDst, Log::Source)));
 				} else {
@@ -428,6 +458,10 @@ void MainWindow::msgUserState(const MumbleProto::UserState &msg) {
 			}
 
 			pmModel->moveUser(pDst, c);
+
+			if (pDst == pSelf) {
+				g.mw->updateChatBar();
+			}
 
 			if (log && (pDst != pSelf) && (pDst->cChannel == pSelf->cChannel)) {
 				if (pDst == pSrc)
@@ -569,6 +603,11 @@ void MainWindow::msgChannelRemove(const MumbleProto::ChannelRemove &msg) {
 void MainWindow::msgTextMessage(const MumbleProto::TextMessage &msg) {
 	ACTOR_INIT;
 	QString target;
+
+	// Silently drop the message if this user is set to "ignore"
+	if (pSrc && pSrc->bLocalIgnore)
+		return;
+
 	const QString &plainName = pSrc ? pSrc->qsName : tr("Server", "message from");
 	const QString &name = pSrc ? Log::formatClientUser(pSrc, Log::Source) : tr("Server", "message from");
 
@@ -721,6 +760,10 @@ void MainWindow::msgCodecVersion(const MumbleProto::CodecVersion &msg) {
 	int alpha = msg.has_alpha() ? msg.alpha() : -1;
 	int beta = msg.has_beta() ? msg.beta() : -1;
 	bool pref = msg.prefer_alpha();
+
+#ifdef USE_OPUS
+	g.bOpus = msg.opus();
+#endif
 
 	// Workaround for broken 1.2.2 servers
 	if (g.sh && g.sh->uiVersion == 0x010202 && alpha != -1 && alpha == beta) {

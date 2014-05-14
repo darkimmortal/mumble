@@ -28,14 +28,18 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "OSS.h"
-#include "User.h"
-#include "Global.h"
-#include "MainWindow.h"
+
 #include <sys/soundcard.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+
+#include "User.h"
+#include "Global.h"
+#include "MainWindow.h"
 
 #define NBLOCKS 8
 
@@ -297,6 +301,8 @@ void OSSOutput::run() {
 	ival = AFMT_S16_NE;
 	if ((ioctl(fd, SNDCTL_DSP_SETFMT, &ival) == -1) || (ival != AFMT_S16_NE)) {
 		qWarning("OSSOutput: Failed to set sound format");
+		if ((ival != AFMT_S16_NE))
+			close(fd);
 		return;
 	}
 

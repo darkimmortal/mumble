@@ -28,18 +28,21 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "ConnectDialog.h"
-#include "Global.h"
-#include "ServerHandler.h"
-#include "Channel.h"
-#include "Database.h"
-#include "WebFetch.h"
 
 #ifdef USE_BONJOUR
 #include "BonjourClient.h"
 #include "BonjourServiceBrowser.h"
 #include "BonjourServiceResolver.h"
 #endif
+
+#include "Channel.h"
+#include "Database.h"
+#include "Global.h"
+#include "ServerHandler.h"
+#include "WebFetch.h"
 
 QMap<QString, QIcon> ServerItem::qmIcons;
 QList<PublicInfo> ConnectDialog::qlPublicServers;
@@ -110,7 +113,7 @@ ServerView::~ServerView() {
 	delete siPublic;
 }
 
-QMimeData *ServerView::mimeData(const QList<QTreeWidgetItem *> mimeitems) const {
+QMimeData *ServerView::mimeData(const QList<QTreeWidgetItem *>& mimeitems) const {
 	if (mimeitems.isEmpty())
 		return NULL;
 
@@ -215,29 +218,12 @@ ServerItem *ServerView::getParent(const QString &continentcode, const QString &c
 
 
 void ServerItem::init() {
-#if QT_VERSION < 0x040500
-	m_emitDataChanged = 0;
-#endif
 	// Without this, columncount is wrong.
 	setData(0, Qt::DisplayRole, QVariant());
 	setData(1, Qt::DisplayRole, QVariant());
 	setData(2, Qt::DisplayRole, QVariant());
 	emitDataChanged();
 }
-
-#if QT_VERSION < 0x040500
-void ServerItem::emitDataChanged() {
-	static QVariant emitDataChangedQVariants[] = { QVariant(0), QVariant(1) };
-
-	if (! treeWidget() || ! treeWidget()->header())
-		return;
-
-	m_emitDataChanged = !m_emitDataChanged;
-
-	int sortCol = treeWidget()->header()->sortIndicatorSection();
-	setData((sortCol > 0) ? sortCol : 0, Qt::UserRole, emitDataChangedQVariants[m_emitDataChanged]);
-}
-#endif
 
 ServerItem::ServerItem(const FavoriteServer &fs) : QTreeWidgetItem(QTreeWidgetItem::UserType) {
 	siParent = NULL;
@@ -486,7 +472,7 @@ QVariant ServerItem::data(int column, int role) const {
 					            arg(boost::accumulators::extended_p_square(* asQuantile)[2] / 1000., 0, 'f', 2)) +
 					    QString::fromLatin1("<tr><th align=left>%1</th><td>%2</td></tr>").arg(ConnectDialog::tr("Bandwidth"), ConnectDialog::tr("%1 kbit/s").arg(uiBandwidth / 1000)) +
 					    QString::fromLatin1("<tr><th align=left>%1</th><td>%2</td></tr>").arg(ConnectDialog::tr("Users"), QString::fromLatin1("%1/%2").arg(uiUsers).arg(uiMaxUsers)) +
-					    QString::fromLatin1("<tr><th align=left>%1</th><td>%2.%3.%4</td></tr>").arg(ConnectDialog::tr("Version")).arg(uiVersion >> 16).arg((uiVersion >> 8) & 0xFF).arg(uiVersion & 0xFF);
+					    QString::fromLatin1("<tr><th align=left>%1</th><td>%2</td></tr>").arg(ConnectDialog::tr("Version")).arg(MumbleVersion::toString(uiVersion));
 				}
 			}
 			qs += QLatin1String("</table>");
@@ -520,7 +506,7 @@ void ServerItem::hideCheck() {
 
 	if (! bParent && (itType == PublicType)) {
 		if (g.s.ssFilter == Settings::ShowReachable)
-			hide = (uiPing == 0);
+			hide = (dPing == 0.0);
 		else if (g.s.ssFilter == Settings::ShowPopulated)
 			hide = (uiUsers == 0);
 	}
@@ -779,12 +765,19 @@ ConnectDialog::ConnectDialog(QWidget *p, bool autoconnect) : QDialog(p), bAutoCo
 
 	qdbbButtonBox->button(QDialogButtonBox::Ok)->setText(tr("&Connect"));
 
-	QPushButton *qpb = new QPushButton(tr("&Add New..."), this);
-	qpb->setDefault(false);
-	qpb->setAutoDefault(false);
-	connect(qpb, SIGNAL(clicked()), qaFavoriteAddNew, SIGNAL(triggered()));
-	qdbbButtonBox->addButton(qpb, QDialogButtonBox::ActionRole);
+	QPushButton *qpbAdd = new QPushButton(tr("&Add New..."), this);
+	qpbAdd->setDefault(false);
+	qpbAdd->setAutoDefault(false);
+	connect(qpbAdd, SIGNAL(clicked()), qaFavoriteAddNew, SIGNAL(triggered()));
+	qdbbButtonBox->addButton(qpbAdd, QDialogButtonBox::ActionRole);
 
+	qpbEdit = new QPushButton(tr("&Edit..."), this);
+	qpbEdit->setEnabled(false);
+	qpbEdit->setDefault(false);
+	qpbEdit->setAutoDefault(false);
+	connect(qpbEdit, SIGNAL(clicked()), qaFavoriteEdit, SIGNAL(triggered()));
+	qdbbButtonBox->addButton(qpbEdit, QDialogButtonBox::ActionRole);
+	
 	qtwServers->sortItems(1, Qt::AscendingOrder);
 	qtwServers->header()->setResizeMode(0, QHeaderView::Stretch);
 	qtwServers->header()->setResizeMode(1, QHeaderView::ResizeToContents);
@@ -1112,7 +1105,13 @@ void ConnectDialog::on_qtwServers_itemDoubleClicked(QTreeWidgetItem *item, int) 
 void ConnectDialog::on_qtwServers_currentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem *) {
 	ServerItem *si = static_cast<ServerItem *>(item);
 
-	bool bOk = (si && ! si->qlAddresses.isEmpty());
+	if (si->siParent == qtwServers->siFavorite) {
+		qpbEdit->setEnabled(true);
+	} else {
+		qpbEdit->setEnabled(false);
+	}
+	
+	bool bOk = !si->qlAddresses.isEmpty();
 	qdbbButtonBox->button(QDialogButtonBox::Ok)->setEnabled(bOk);
 
 	bLastFound = true;

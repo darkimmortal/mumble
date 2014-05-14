@@ -29,6 +29,8 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "mumble_pch.hpp"
+
 #include "G15LCDEngine_helper.h"
 
 static LCDEngine *G15LCDEngineNew() {
@@ -121,7 +123,7 @@ void G15LCDEngineHelper::submitFrame(bool alert, unsigned char *buf, size_t len)
 
 /* -- */
 
-G15LCDDeviceHelper::G15LCDDeviceHelper(G15LCDEngineHelper *e) : LCDDevice() {
+G15LCDDeviceHelper::G15LCDDeviceHelper(G15LCDEngineHelper *e) : LCDDevice(), bEnabled(false) {
 	engine = e;
 }
 

@@ -31,21 +31,26 @@
 
 #include "murmur_pch.h"
 
+#include "Server.h"
+
+#include "ACL.h"
+#include "Connection.h"
+#include "Group.h"
 #include "User.h"
 #include "Channel.h"
-#include "ACL.h"
-#include "Group.h"
 #include "Message.h"
-#include "ServerDB.h"
-#include "Connection.h"
-#include "Server.h"
-#include "DBus.h"
 #include "Meta.h"
 #include "PacketDataStream.h"
+#include "ServerDB.h"
 #include "ServerUser.h"
 
 #ifdef USE_BONJOUR
+#include "BonjourServer.h"
 #include "BonjourServiceRegister.h"
+#endif
+
+#ifndef MAX
+#define MAX(a,b) ((a)>(b) ? (a):(b))
 #endif
 
 #define UDP_PACKET_SIZE 1024
@@ -96,6 +101,7 @@ Server::Server(int snum, QObject *p) : QThread(p) {
 
 	iCodecAlpha = iCodecBeta = 0;
 	bPreferAlpha = false;
+	bOpus = true;
 
 	qnamNetwork = NULL;
 
@@ -328,6 +334,8 @@ void Server::readParams() {
 	qvSuggestVersion = Meta::mp.qvSuggestVersion;
 	qvSuggestPositional = Meta::mp.qvSuggestPositional;
 	qvSuggestPushToTalk = Meta::mp.qvSuggestPushToTalk;
+	iOpusThreshold = Meta::mp.iOpusThreshold;
+	iChannelNestingLimit = Meta::mp.iChannelNestingLimit;
 
 	QString qsHost = getConf("host", QString()).toString();
 	if (! qsHost.isEmpty()) {
@@ -389,6 +397,10 @@ void Server::readParams() {
 	qvSuggestPushToTalk = getConf("suggestpushtotalk", qvSuggestPushToTalk);
 	if (qvSuggestPushToTalk.toString().trimmed().isEmpty())
 		qvSuggestPushToTalk = QVariant();
+
+	iOpusThreshold = getConf("opusthreshold", iOpusThreshold).toInt();
+
+	iChannelNestingLimit = getConf("channelnestinglimit", iChannelNestingLimit).toInt();
 
 	qrUserName=QRegExp(getConf("username", qrUserName.pattern()).toString());
 	qrChannelName=QRegExp(getConf("channelname", qrChannelName.pattern()).toString());
@@ -500,6 +512,10 @@ void Server::setLiveConf(const QString &key, const QString &value) {
 		qvSuggestPositional = ! v.isNull() ? (v.isEmpty() ? QVariant() : v) : Meta::mp.qvSuggestPositional;
 	else if (key == "suggestpushtotalk")
 		qvSuggestPushToTalk = ! v.isNull() ? (v.isEmpty() ? QVariant() : v) : Meta::mp.qvSuggestPushToTalk;
+	else if (key == "opusthreshold")
+		iOpusThreshold = (i >= 0 && !v.isNull()) ? qBound(0, i, 100) : Meta::mp.iOpusThreshold;
+	else if (key =="channelnestinglimit")
+		iChannelNestingLimit = (i >= 0 && !v.isNull()) ? i : Meta::mp.iChannelNestingLimit;
 }
 
 #ifdef USE_BONJOUR
@@ -765,6 +781,8 @@ void Server::run() {
 					case MessageHandler::UDPVoiceSpeex:
 					case MessageHandler::UDPVoiceCELTAlpha:
 					case MessageHandler::UDPVoiceCELTBeta:
+						if (bOpus)
+							break;
 					case MessageHandler::UDPVoiceOpus: {
 							u->bUdp = true;
 							processMsg(u, buffer, len);
@@ -835,20 +853,23 @@ void Server::sendMessage(ServerUser *u, const char *data, int len, QByteArray &c
 		msg.msg_controllen = CMSG_SPACE((u->saiUdpAddress.ss_family == AF_INET6) ? sizeof(struct in6_pktinfo) : sizeof(struct in_pktinfo));
 
 		struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-		if (u->saiTcpLocalAddress.ss_family == AF_INET6) {
+		HostAddress tcpha(u->saiTcpLocalAddress);
+		if (u->saiUdpAddress.ss_family == AF_INET6) {
 			cmsg->cmsg_level = IPPROTO_IPV6;
 			cmsg->cmsg_type = IPV6_PKTINFO;
 			cmsg->cmsg_len = CMSG_LEN(sizeof(struct in6_pktinfo));
 			struct in6_pktinfo *pktinfo = reinterpret_cast<struct in6_pktinfo *>(CMSG_DATA(cmsg));
 			memset(pktinfo, 0, sizeof(*pktinfo));
-			pktinfo->ipi6_addr =  reinterpret_cast<struct sockaddr_in6 *>(& u->saiTcpLocalAddress)->sin6_addr;
+			memcpy(&pktinfo->ipi6_addr.s6_addr[0], &tcpha.qip6.c[0], sizeof(pktinfo->ipi6_addr.s6_addr));
 		} else {
 			cmsg->cmsg_level = IPPROTO_IP;
 			cmsg->cmsg_type = IP_PKTINFO;
 			cmsg->cmsg_len = CMSG_LEN(sizeof(struct in_pktinfo));
 			struct in_pktinfo *pktinfo = reinterpret_cast<struct in_pktinfo *>(CMSG_DATA(cmsg));
 			memset(pktinfo, 0, sizeof(*pktinfo));
-			pktinfo->ipi_spec_dst =  reinterpret_cast<struct sockaddr_in *>(& u->saiTcpLocalAddress)->sin_addr;
+			if (tcpha.isV6())
+				return;
+			pktinfo->ipi_spec_dst.s_addr = tcpha.hash[3];
 		}
 
 
@@ -888,7 +909,6 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 	char buffer[UDP_PACKET_SIZE];
 	PacketDataStream pdi(data + 1, len - 1);
 	PacketDataStream pds(buffer+1, UDP_PACKET_SIZE-1);
-	MessageHandler::UDPMessageType msgType = static_cast<MessageHandler::UDPMessageType>((buffer[0] >> 5) & 0x7);
 	unsigned int type = data[0] & 0xe0;
 	unsigned int target = data[0] & 0x1f;
 	unsigned int poslen;
@@ -896,27 +916,33 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 	// IP + UDP + Crypt + Data
 	int packetsize = 20 + 8 + 4 + len;
 
+	// Check the voice data rate limit.
 	if (! bw->addFrame(packetsize, iMaxBandwidth/8)) {
 		// Suppress packet.
 		return;
 	}
 
+	// Read the sequence number.
 	pdi >> counter;
 
-	if (msgType != MessageHandler::UDPVoiceOpus) {
+	// Skip to the end of the voice data.
+	if ((type >> 5) != MessageHandler::UDPVoiceOpus) {
 		do {
 			counter = pdi.next8();
 			pdi.skip(counter & 0x7f);
 		} while ((counter & 0x80) && pdi.isValid());
 	} else {
-		unsigned int voicelen;
-		pds >> voicelen;
-		pds.skip(voicelen);
+		int size;
+		pdi >> size;
+		pdi.skip(size & 0x1fff);
 	}
 
+	// Save location of the positional audio data.
 	poslen = pdi.left();
 
+	// Append session id to the new output stream.
 	pds << u->uiSession;
+	// Copy all voice and positional audio data to the output stream.
 	pds.append(data + 1, len - 1);
 
 	len = pds.size() + 1;
@@ -939,7 +965,7 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 			QMutexLocker qml(&qmCache);
 
 			foreach(Channel *l, chans) {
-				if (ChanACL::hasPermission(u, l, ChanACL::Speak, acCache)) {
+				if (ChanACL::hasPermission(u, l, ChanACL::Speak, &acCache)) {
 					foreach(p, l->qlUsers) {
 						ServerUser *pDst = static_cast<ServerUser *>(p);
 						SENDTO;
@@ -968,7 +994,7 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 						bool group = ! wtc.qsGroup.isEmpty();
 						if (!link && !dochildren && ! group) {
 							// Common case
-							if (ChanACL::hasPermission(u, wc, ChanACL::Whisper, acCache)) {
+							if (ChanACL::hasPermission(u, wc, ChanACL::Whisper, &acCache)) {
 								foreach(p, wc->qlUsers) {
 									channel.insert(static_cast<ServerUser *>(p));
 								}
@@ -984,7 +1010,7 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 							const QString &redirect = u->qmWhisperRedirect.value(wtc.qsGroup);
 							const QString &qsg = redirect.isEmpty() ? wtc.qsGroup : redirect;
 							foreach(Channel *tc, channels) {
-								if (ChanACL::hasPermission(u, tc, ChanACL::Whisper, acCache)) {
+								if (ChanACL::hasPermission(u, tc, ChanACL::Whisper, &acCache)) {
 									foreach(p, tc->qlUsers) {
 										ServerUser *su = static_cast<ServerUser *>(p);
 										if (! group || Group::isMember(tc, tc, qsg, su)) {
@@ -1000,7 +1026,7 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 
 			foreach(unsigned int id, wt.qlSessions) {
 				ServerUser *pDst = qhUsers.value(id);
-				if (pDst && ! channel.contains(pDst))
+				if (pDst && ChanACL::hasPermission(u, pDst->cChannel, ChanACL::Whisper, &acCache) && ! channel.contains(pDst))
 					direct.insert(pDst);
 			}
 
@@ -1034,7 +1060,7 @@ void Server::processMsg(ServerUser *u, const char *data, int len) {
 	}
 }
 
-void Server::log(ServerUser *u, const QString &str) {
+void Server::log(ServerUser *u, const QString &str) const {
 	QString msg = QString("<%1:%2(%3)> %4").arg(QString::number(u->uiSession),
 	              u->qsName,
 	              QString::number(u->iId),
@@ -1042,7 +1068,7 @@ void Server::log(ServerUser *u, const QString &str) {
 	log(msg);
 }
 
-void Server::log(const QString &msg) {
+void Server::log(const QString &msg) const {
 	dblog(msg);
 	qWarning("%d => %s", iServerNum, msg.toUtf8().constData());
 }
@@ -1088,6 +1114,7 @@ void Server::newClient() {
 
 		sock->setPrivateKey(qskKey);
 		sock->setLocalCertificate(qscCert);
+		sock->addCaCertificate(qscCert);
 		sock->addCaCertificates(qlCA);
 
 		if (qqIds.isEmpty()) {
@@ -1158,6 +1185,9 @@ void Server::encrypted() {
 
 void Server::sslError(const QList<QSslError> &errors) {
 	ServerUser *u = qobject_cast<ServerUser *>(sender());
+	if (!u)
+		return;
+
 	bool ok = true;
 	foreach(QSslError e, errors) {
 		switch (e.error()) {
@@ -1178,8 +1208,6 @@ void Server::sslError(const QList<QSslError> &errors) {
 				ok = false;
 		}
 	}
-	if (! u)
-		return;
 
 	if (ok)
 		u->proceedAnyway();
@@ -1231,6 +1259,7 @@ void Server::connectionClosed(QAbstractSocket::SocketError err, const QString &r
 
 	if (u->sState == ServerUser::Authenticated) {
 		clearTempGroups(u); // Also clears ACL cache
+		recheckCodecVersions(); // Maybe can choose a better codec now
 	}
 
 	u->deleteLater();
@@ -1265,6 +1294,8 @@ void Server::message(unsigned int uiType, const QByteArray &qbaMsg, ServerUser *
 			case MessageHandler::UDPVoiceCELTAlpha:
 			case MessageHandler::UDPVoiceCELTBeta:
 			case MessageHandler::UDPVoiceSpeex:
+				if (bOpus)
+					break;
 			case MessageHandler::UDPVoiceOpus:
 				processMsg(u, buffer, l);
 				break;
@@ -1462,20 +1493,19 @@ void Server::userEnterChannel(User *p, Channel *c, MumbleProto::UserState &mpus)
 	{
 		QWriteLocker wl(&qrwlUsers);
 		c->addUser(p);
+
+		bool mayspeak = ChanACL::hasPermission(static_cast<ServerUser *>(p), c, ChanACL::Speak, NULL);
+		bool sup = p->bSuppress;
+
+		if (mayspeak == sup) {
+			// Ok, he can speak and was suppressed, or vice versa
+			p->bSuppress = ! mayspeak;
+			mpus.set_suppress(p->bSuppress);
+		}
 	}
 
 	clearACLCache(p);
-
 	setLastChannel(p);
-
-	bool mayspeak = hasPermission(static_cast<ServerUser *>(p), c, ChanACL::Speak);
-	bool sup = p->bSuppress;
-
-	if (mayspeak == sup) {
-		// Ok, he can speak and was suppressed, or vice versa
-		p->bSuppress = ! mayspeak;
-		mpus.set_suppress(p->bSuppress);
-	}
 
 	if (old && old->bTemporary && old->qlUsers.isEmpty()) {
 		QCoreApplication::instance()->postEvent(this, new ExecEvent(boost::bind(&Server::removeChannel, this, old->iId)));
@@ -1488,7 +1518,12 @@ void Server::userEnterChannel(User *p, Channel *c, MumbleProto::UserState &mpus)
 
 bool Server::hasPermission(ServerUser *p, Channel *c, QFlags<ChanACL::Perm> perm) {
 	QMutexLocker qml(&qmCache);
-	return ChanACL::hasPermission(p, c, perm, acCache);
+	return ChanACL::hasPermission(p, c, perm, &acCache);
+}
+
+QFlags<ChanACL::Perm> Server::effectivePermissions(ServerUser *p, Channel *c) {
+	QMutexLocker qml(&qmCache);
+	return ChanACL::effectivePermissions(p, c, &acCache);
 }
 
 void Server::sendClientPermission(ServerUser *u, Channel *c, bool forceupdate) {
@@ -1499,7 +1534,7 @@ void Server::sendClientPermission(ServerUser *u, Channel *c, bool forceupdate) {
 
 	{
 		QMutexLocker qml(&qmCache);
-		ChanACL::hasPermission(u, c, ChanACL::Enter, acCache);
+		ChanACL::hasPermission(u, c, ChanACL::Enter, &acCache);
 		perm = acCache.value(u)->value(c);
 	}
 
@@ -1533,7 +1568,7 @@ void Server::flushClientPermissionCache(ServerUser *u, MumbleProto::PermissionQu
 		if (! c) {
 			match = false;
 		} else {
-			ChanACL::hasPermission(u, c, ChanACL::Enter, acCache);
+			ChanACL::hasPermission(u, c, ChanACL::Enter, &acCache);
 			unsigned int perm = acCache.value(u)->value(c);
 			if (perm != i.value())
 				match = false;
@@ -1551,7 +1586,7 @@ void Server::flushClientPermissionCache(ServerUser *u, MumbleProto::PermissionQu
 		u->iLastPermissionCheck = c->iId;
 	}
 
-	ChanACL::hasPermission(u, c, ChanACL::Enter, acCache);
+	ChanACL::hasPermission(u, c, ChanACL::Enter, &acCache);
 	unsigned int perm = acCache.value(u)->value(c);
 	u->qmPermissionSent.insert(c->iId, perm);
 
@@ -1619,23 +1654,30 @@ bool Server::validateChannelName(const QString &name) {
 	return (qrChannelName.exactMatch(name) && (name.length() <= 512));
 }
 
-void Server::recheckCodecVersions() {
+void Server::recheckCodecVersions(ServerUser *connectingUser) {
 	QMap<int, int> qmCodecUsercount;
 	QMap<int, int>::const_iterator i;
 	int users = 0;
+	int opus = 0;
 
 	// Count how many users use which codec
 	foreach(ServerUser *u, qhUsers) {
-		if (u->qlCodecs.isEmpty())
+		if (u->qlCodecs.isEmpty() && ! u->bOpus)
 			continue;
 
 		++users;
+		if (u->bOpus)
+			++opus;
+
 		foreach(int version, u->qlCodecs)
-			++ qmCodecUsercount[version];
+			++qmCodecUsercount[version];
 	}
 
 	if (! users)
 		return;
+
+	// Enable Opus if the number of users with Opus is higher than the threshold
+	bool enableOpus = ((opus * 100 / users) >= iOpusThreshold);
 
 	// Find the best possible codec most users support
 	int version = 0;
@@ -1650,31 +1692,50 @@ void Server::recheckCodecVersions() {
 	} while (i != qmCodecUsercount.constBegin());
 
 	int current_version = bPreferAlpha ? iCodecAlpha : iCodecBeta;
-	if (current_version == version)
-		return;
-
-	MumbleProto::CodecVersion mpcv;
 
 	// If we don't already use the compat bitstream version set
 	// it as alpha and announce it. If another codec now got the
 	// majority set it as the opposite of the currently valid bPreferAlpha
 	// and announce it.
-	if (version == static_cast<qint32>(0x8000000b))
-		bPreferAlpha = true;
-	else
-		bPreferAlpha = ! bPreferAlpha;
 
-	if (bPreferAlpha)
-		iCodecAlpha = version;
-	else
-		iCodecBeta = version;
+	if (current_version != version) {
+		if (version == static_cast<qint32>(0x8000000b))
+			bPreferAlpha = true;
+		else
+			bPreferAlpha = ! bPreferAlpha;
 
+		if (bPreferAlpha)
+			iCodecAlpha = version;
+		else
+			iCodecBeta = version;
+	} else if (bOpus == enableOpus) {
+		if (bOpus && connectingUser && !connectingUser->bOpus) {
+			sendTextMessage(NULL, connectingUser, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is using, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
+		}
+		return;
+	}
+
+	bOpus = enableOpus;
+
+	MumbleProto::CodecVersion mpcv;
 	mpcv.set_alpha(iCodecAlpha);
 	mpcv.set_beta(iCodecBeta);
 	mpcv.set_prefer_alpha(bPreferAlpha);
+	mpcv.set_opus(bOpus);
 	sendAll(mpcv);
 
-	log(QString::fromLatin1("CELT codec switch %1 %2 (prefer %3)").arg(iCodecAlpha,0,16).arg(iCodecBeta,0,16).arg(bPreferAlpha ? iCodecAlpha : iCodecBeta,0,16));
+	if (bOpus) {
+		foreach(ServerUser *u, qhUsers) {
+			// Prevent connected users that could not yet declare their opus capability during msgAuthenticate from being spammed.
+			// Only authenticated users and the currently connecting user (if recheck is called in that context) have a reliable u->bOpus.
+			if((u->sState == ServerUser::Authenticated || u == connectingUser)
+			   && !u->bOpus) {
+				sendTextMessage(NULL, u, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is switching to, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
+			}
+		}
+	}
+
+	log(QString::fromLatin1("CELT codec switch %1 %2 (prefer %3) (Opus %4)").arg(iCodecAlpha,0,16).arg(iCodecBeta,0,16).arg(bPreferAlpha ? iCodecAlpha : iCodecBeta,0,16).arg(bOpus));
 }
 
 void Server::hashAssign(QString &dest, QByteArray &hash, const QString &src) {
@@ -1770,4 +1831,11 @@ bool Server::isTextAllowed(QString &text, bool &changed) {
 
 		return (length <= iMaxTextMessageLength);
 	}
+}
+
+bool Server::canNest(Channel *newParent, Channel *channel) const {
+	const int parentLevel = newParent ? newParent->getLevel() : -1;
+	const int channelDepth = channel ? channel->getDepth() : 0;
+
+	return (parentLevel + channelDepth) < iChannelNestingLimit;
 }
