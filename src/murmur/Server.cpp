@@ -47,6 +47,7 @@
 #ifdef USE_BONJOUR
 #include "BonjourServer.h"
 #include "BonjourServiceRegister.h"
+#include "Mumble.pb.h"
 #endif
 
 #ifndef MAX
@@ -467,7 +468,7 @@ void Server::setLiveConf(const QString &key, const QString &value) {
 			qsWelcomeText = text;
 			if (! qsWelcomeText.isEmpty()) {
 				MumbleProto::ServerConfig mpsc;
-				mpsc.set_welcome_text(u8(qsWelcomeText));
+				mpsc.set_welcome_text(u8(qsWelcomeText));                                
 				sendAll(mpsc);
 			}
 		}
@@ -554,7 +555,7 @@ void Server::udpActivated(int socket) {
 	iov[0].iov_base = encrypt;
 	iov[0].iov_len = UDP_PACKET_SIZE;
 
-	u_char controldata[CMSG_SPACE(MAX(sizeof(struct in6_pktinfo),sizeof(struct in_pktinfo)))];
+	u_char controldata[CMSG_SPACE(sizeof(struct in_pktinfo))];
 
 	memset(&msg, 0, sizeof(msg));
 	msg.msg_name = reinterpret_cast<struct sockaddr *>(&from);
@@ -689,7 +690,7 @@ void Server::run() {
 				iov[0].iov_base = encrypt;
 				iov[0].iov_len = UDP_PACKET_SIZE;
 
-				u_char controldata[CMSG_SPACE(MAX(sizeof(struct in6_pktinfo),sizeof(struct in_pktinfo)))];
+				u_char controldata[CMSG_SPACE((sizeof(struct in_pktinfo)))];
 
 				memset(&msg, 0, sizeof(msg));
 				msg.msg_name = reinterpret_cast<struct sockaddr *>(&from);
@@ -841,7 +842,7 @@ void Server::sendMessage(ServerUser *u, const char *data, int len, QByteArray &c
 		iov[0].iov_base = buffer;
 		iov[0].iov_len = len+4;
 
-		u_char controldata[CMSG_SPACE(MAX(sizeof(struct in6_pktinfo),sizeof(struct in_pktinfo)))];
+		u_char controldata[CMSG_SPACE(sizeof(struct in_pktinfo))];
 		memset(controldata, 0, sizeof(controldata));
 
 		memset(&msg, 0, sizeof(msg));
@@ -1144,7 +1145,11 @@ void Server::newClient() {
 
 		u->setToS();
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+		sock->setProtocol(QSsl::TlsV1_0);
+#else
 		sock->setProtocol(QSsl::TlsV1);
+#endif
 		sock->startServerEncryption();
 	}
 }
@@ -1168,10 +1173,31 @@ void Server::encrypted() {
 	QList<QSslCertificate> certs = uSource->peerCertificateChain();
 	if (!certs.isEmpty()) {
 		const QSslCertificate &cert = certs.last();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+		uSource->qslEmail = cert.subjectAlternativeNames().values(QSsl::EmailEntry);
+#else
 		uSource->qslEmail = cert.alternateSubjectNames().values(QSsl::EmailEntry);
+#endif
 		uSource->qsHash = cert.digest(QCryptographicHash::Sha1).toHex();
 		if (! uSource->qslEmail.isEmpty() && uSource->bVerified) {
-			log(uSource, QString("Strong certificate for %1 <%2> (signed by %3)").arg(cert.subjectInfo(QSslCertificate::CommonName)).arg(uSource->qslEmail.join(", ")).arg(certs.first().issuerInfo(QSslCertificate::CommonName)));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+			QString subject;
+			QString issuer;
+
+			QStringList subjectList = cert.subjectInfo(QSslCertificate::CommonName);
+			if (! subjectList.isEmpty()) {
+				subject = subjectList.first();
+			}
+
+			QStringList issuerList = certs.first().issuerInfo(QSslCertificate::CommonName);
+			if (! issuerList.isEmpty()) {
+				issuer = issuerList.first();
+			}
+#else
+			QString subject = cert.subjectInfo(QSslCertificate::CommonName);
+			QString issuer = certs.first().issuerInfo(QSslCertificate::CommonName);
+#endif
+			log(uSource, QString::fromUtf8("Strong certificate for %1 <%2> (signed by %3)").arg(subject).arg(uSource->qslEmail.join(", ")).arg(issuer));
 		}
 
 		foreach(const Ban &ban, qlBans) {
@@ -1487,7 +1513,9 @@ bool Server::unregisterUser(int id) {
 void Server::userEnterChannel(User *p, Channel *c, MumbleProto::UserState &mpus) {
 	if (p->cChannel == c)
 		return;
-
+        //sendTextMessage(NULL, static_cast<ServerUser *>(p), false, QString("<strong>suck a dick (max %1 users).</strong>").arg(1));	
+  
+        
 	Channel *old = p->cChannel;
 
 	{
@@ -1730,7 +1758,7 @@ void Server::recheckCodecVersions(ServerUser *connectingUser) {
 			// Only authenticated users and the currently connecting user (if recheck is called in that context) have a reliable u->bOpus.
 			if((u->sState == ServerUser::Authenticated || u == connectingUser)
 			   && !u->bOpus) {
-				sendTextMessage(NULL, u, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is switching to, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
+				//sendTextMessage(NULL, u, false, QLatin1String("<strong>WARNING:</strong> Your client doesn't support the Opus codec the server is switching to, you won't be able to talk or hear anyone. Please upgrade to a client with Opus support."));
 			}
 		}
 	}
@@ -1801,6 +1829,8 @@ bool Server::isTextAllowed(QString &text, bool &changed) {
 		if (! text.contains(QLatin1Char('<')))
 			return false;
 
+		// Strip value from <img>s src attributes to check text-length only -
+		// we already ensured the img-length requirement is met
 		QString qsOut;
 		QXmlStreamReader qxsr(QString::fromLatin1("<document>%1</document>").arg(text));
 		QXmlStreamWriter qxsw(&qsOut);
@@ -1810,8 +1840,6 @@ bool Server::isTextAllowed(QString &text, bool &changed) {
 					return false;
 				case QXmlStreamReader::StartElement: {
 						if (qxsr.name() == QLatin1String("img")) {
-							QXmlStreamAttributes attr = qxsr.attributes();
-
 							qxsw.writeStartElement(qxsr.namespaceUri().toString(), qxsr.name().toString());
 							foreach(const QXmlStreamAttribute &a, qxsr.attributes())
 								if (a.name() != QLatin1String("src"))

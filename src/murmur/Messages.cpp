@@ -137,6 +137,9 @@ void Server::msgAuthenticate(ServerUser *uSource, MumbleProto::Authenticate &msg
 	} else if (id==-2 && ! qsPassword.isEmpty() && qsPassword != pw) {
 		reason = "Invalid server password";
 		rtType = MumbleProto::Reject_RejectType_WrongServerPW;
+	} else if (id==-3) {
+		reason = "Your account information can not be verified currently. Please try again later";
+		rtType = MumbleProto::Reject_RejectType_AuthenticatorFail;
 	} else {
 		ok = true;
 	}
@@ -507,6 +510,19 @@ void Server::msgUserState(ServerUser *uSource, MumbleProto::UserState &msg) {
 			PERM_DENIED_FALLBACK(ChannelFull, 0x010201, QLatin1String("Channel is full"));
 			return;
 		}
+
+    QRegExp rx("\\[\\[limit\\:(\\d+)\\]\\]");
+    if(rx.indexIn(c->qsDesc) != 1){
+       bool ok;
+       unsigned int uiLimit = rx.cap(1).toUInt(&ok, 10);
+       if(ok && uSource == pDstServerUser /*&& !hasPermission(uSource, c, ChanACL::Move)*/ && c->qlUsers.count() >= uiLimit){
+           //mpus.set_channel_id(c->iId);
+           PERM_DENIED_FALLBACK(ChannelFull, 0x010201, QString("<strong>Fuck off you stupid shit, this channel is full (max %1 users).</strong>").arg(uiLimit));
+           sendTextMessage(NULL, pDstServerUser, false, QString("<strong>Fuck off you stupid shit, this channel is full (max %1 users).</strong>").arg(uiLimit));
+           return;
+       }
+    }
+
 	}
 
 	if (msg.has_mute() || msg.has_deaf() || msg.has_suppress() || msg.has_priority_speaker()) {
@@ -1431,6 +1447,8 @@ void Server::msgVersion(ServerUser *uSource, MumbleProto::Version &msg) {
 void Server::msgUserList(ServerUser *uSource, MumbleProto::UserList &msg) {
 	MSG_SETUP(ServerUser::Authenticated);
 
+	// The register permission is required on the root channel to be allowed to
+	// view the registered users.
 	if (! hasPermission(uSource, qhChannels.value(0), ChanACL::Register)) {
 		PERM_DENIED(uSource, qhChannels.value(0), ChanACL::Register);
 		return;
@@ -1438,18 +1456,23 @@ void Server::msgUserList(ServerUser *uSource, MumbleProto::UserList &msg) {
 
 	if (msg.users_size() == 0) {
 		// Query mode.
-		QMap<int, QString> users = getRegisteredUsers();
-		QMap<int, QString>::const_iterator i;
-		for (i = users.constBegin(); i != users.constEnd(); ++i) {
-			if (i.key() > 0) {
+		QList<UserInfo> users = getRegisteredUsersEx();
+		QList<UserInfo>::const_iterator it = users.constBegin();
+		for (; it != users.constEnd(); ++it) {
+			// Skip the SuperUser
+			if (it->user_id > 0) {
 				::MumbleProto::UserList_User *u = msg.add_users();
-				u->set_user_id(i.key());
-				u->set_name(u8(i.value()));
+				u->set_user_id(it->user_id);
+				u->set_name(u8(it->name));
+				if (it->last_channel) {
+					u->set_last_channel(*it->last_channel);
+				}
+				u->set_last_seen(u8(it->last_active.toString(Qt::ISODate)));
 			}
 		}
 		sendMessage(uSource, msg);
 	} else {
-		for (int i=0;i < msg.users_size(); ++i) {
+		for (int i=0; i < msg.users_size(); ++i) {
 			const MumbleProto::UserList_User &u = msg.users(i);
 
 			int id = u.user_id();
